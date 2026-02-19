@@ -13,17 +13,20 @@ class PatientVisit extends Model
     protected $fillable = [
         'patient_id',
         'visit_date',
+        'visit_type',
         'reason',
         'diagnosis',
         'treatment',
         'doctor_name',
         'follow_up_date',
+        'discharge_date',
         'notes',
     ];
 
     protected $casts = [
         'visit_date'     => 'datetime',
         'follow_up_date' => 'date',
+        'discharge_date' => 'date',
     ];
 
     public function patient(): BelongsTo

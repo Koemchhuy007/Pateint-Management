@@ -37,6 +37,18 @@
             <div class="card-body">
                 <table class="table table-borderless table-sm mb-0">
                     <tr><th width="40%">Visit Date</th><td>{{ $visit->visit_date->format('F d, Y H:i') }}</td></tr>
+                    <tr>
+                        <th>Visit Type</th>
+                        <td>
+                            @if($visit->visit_type === 'OPD')
+                                <span class="badge" style="background:#0ea5e9;">OPD</span>
+                            @elseif($visit->visit_type === 'IPD')
+                                <span class="badge" style="background:#8b5cf6;">IPD</span>
+                            @else
+                                <span class="text-muted">—</span>
+                            @endif
+                        </td>
+                    </tr>
                     <tr><th>Doctor</th><td>{{ $visit->doctor_name }}</td></tr>
                     <tr><th>Reason</th><td>{{ $visit->reason }}</td></tr>
                     <tr>

@@ -122,11 +122,6 @@
                             <h6 class="mb-1 fw-bold" style="line-height:1.3;">{{ $patient->full_name }}</h6>
                             <div class="d-flex gap-1 flex-wrap mb-2">
                                 <span class="badge badge-{{ $patient->status }}">{{ ucfirst($patient->status) }}</span>
-                                @if($patient->type === 'OPD')
-                                    <span class="badge" style="background:#0ea5e9;">OPD</span>
-                                @elseif($patient->type === 'IPD')
-                                    <span class="badge" style="background:#8b5cf6;">IPD</span>
-                                @endif
                                 @if($patient->active_case)
                                     <span class="badge bg-success">
                                         <i class="bi bi-folder2-open me-1"></i>Active
@@ -147,9 +142,7 @@
                                         </button>
                                     </form>
                                 @endif
-                                <a href="{{ route('patients.index') }}" class="btn btn-outline-secondary btn-sm">
-                                    <i class="bi bi-arrow-left me-1"></i>Back
-                                </a>
+                                
                             </div>
                         </div>
                     </div>
@@ -228,11 +221,11 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Date</th>
-                                    <th>Reason</th>
-                                    <th>Diagnosis</th>
+                                    <th class="text-center">Type</th>
                                     <th>Doctor</th>
                                     <th>Follow-up</th>
-                                    <th style="width:100px">Actions</th>
+                                    <th>Discharge Date</th>
+                                    <th style="width:130px">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -249,13 +242,29 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td>{{ Str::limit($visit->reason, 45) }}</td>
-                                    <td class="text-muted">{{ $visit->diagnosis ? Str::limit($visit->diagnosis, 45) : '—' }}</td>
+                                    <td class="text-center">
+                                        @if($visit->visit_type === 'OPD')
+                                            <span class="badge" style="background:#0ea5e9;">OPD</span>
+                                        @elseif($visit->visit_type === 'IPD')
+                                            <span class="badge" style="background:#8b5cf6;">IPD</span>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $visit->doctor_name }}</td>
                                     <td>
                                         @if($visit->follow_up_date)
                                             <span class="{{ $visit->follow_up_date->isPast() ? 'text-danger' : 'text-success' }}">
                                                 <i class="bi bi-calendar-event me-1"></i>{{ $visit->follow_up_date->format('d/m/Y') }}
+                                            </span>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($visit->discharge_date)
+                                            <span class="text-success">
+                                                <i class="bi bi-check-circle me-1"></i>{{ $visit->discharge_date->format('d/m/Y') }}
                                             </span>
                                         @else
                                             <span class="text-muted">—</span>
@@ -271,6 +280,16 @@
                                                class="btn btn-outline-primary" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
+                                            @if(!$visit->discharge_date)
+                                                <form action="{{ route('patients.visits.discharge', [$patient, $visit]) }}"
+                                                      method="POST" class="d-inline"
+                                                      onsubmit="return confirm('Mark this visit as discharged today?');">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-outline-warning" title="Discard / Discharge">
+                                                        <i class="bi bi-box-arrow-right"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
                                             <form action="{{ route('patients.visits.destroy', [$patient, $visit]) }}"
                                                   method="POST" class="d-inline"
                                                   onsubmit="return confirm('Delete this visit record?');">

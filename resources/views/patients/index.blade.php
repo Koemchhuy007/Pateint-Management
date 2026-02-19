@@ -32,13 +32,6 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <select name="type" class="form-select">
-                    <option value="">All types</option>
-                    <option value="OPD" {{ request('type') === 'OPD' ? 'selected' : '' }}>OPD</option>
-                    <option value="IPD" {{ request('type') === 'IPD' ? 'selected' : '' }}>IPD</option>
-                </select>
-            </div>
-            <div class="col-md-2">
                 <button type="submit" class="btn btn-outline-primary w-100">
                     <i class="bi bi-search me-1"></i>Search
                 </button>
@@ -54,8 +47,6 @@
                         <th>Patient Name</th>
                         <th class="text-center">Sex</th>
                         <th class="text-center">Age</th>
-                        <th>Patient Code</th>
-                        <th class="text-center">Type</th>
                         <th>Address</th>
                         <th class="text-center" style="width:120px">Actions</th>
                     </tr>
@@ -82,6 +73,7 @@
                             {{-- Patient Name --}}
                             <td>
                                 <div class="fw-semibold">{{ $patient->full_name }}</div>
+                                <div class="text-muted" style="font-size:.75rem;">{{ $patient->patient_id }}</div>
                                 @if($patient->active_case)
                                     <span class="badge bg-warning text-dark" style="font-size:.62rem;">Active Case</span>
                                 @endif
@@ -101,22 +93,6 @@
                             {{-- Age --}}
                             <td class="text-center">
                                 {{ $patient->age ?? '—' }}
-                            </td>
-
-                            {{-- Patient Code --}}
-                            <td>
-                                <code class="text-dark">{{ $patient->patient_id }}</code>
-                            </td>
-
-                            {{-- Type --}}
-                            <td class="text-center">
-                                @if($patient->type === 'OPD')
-                                    <span class="badge" style="background:#0ea5e9;">OPD</span>
-                                @elseif($patient->type === 'IPD')
-                                    <span class="badge" style="background:#8b5cf6;">IPD</span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
                             </td>
 
                             {{-- Address --}}
@@ -155,7 +131,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="text-center py-5 text-muted">
+                            <td colspan="7" class="text-center py-5 text-muted">
                                 <i class="bi bi-inbox display-4 d-block mb-2"></i>
                                 No patients found.
                                 <a href="{{ route('patients.create') }}">Add your first patient</a>

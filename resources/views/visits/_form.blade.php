@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-6 mb-3">
+    <div class="col-md-4 mb-3">
         <label class="form-label fw-semibold">Visit Date & Time <span class="text-danger">*</span></label>
         <input type="datetime-local"
                name="visit_date"
@@ -10,7 +10,25 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
-    <div class="col-md-6 mb-3">
+    <div class="col-md-4 mb-3">
+        <label class="form-label fw-semibold">Visit Type <span class="text-danger">*</span></label>
+        <div class="d-flex gap-3 mt-1">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="visit_type" id="visitOPD" value="OPD"
+                       {{ old('visit_type', $visit->visit_type ?? 'OPD') === 'OPD' ? 'checked' : '' }} required>
+                <label class="form-check-label fw-semibold" style="color:#0ea5e9;" for="visitOPD">OPD</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="visit_type" id="visitIPD" value="IPD"
+                       {{ old('visit_type', $visit->visit_type ?? '') === 'IPD' ? 'checked' : '' }}>
+                <label class="form-check-label fw-semibold" style="color:#8b5cf6;" for="visitIPD">IPD</label>
+            </div>
+        </div>
+        @error('visit_type')
+            <div class="text-danger mt-1" style="font-size:.82rem;">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-md-4 mb-3">
         <label class="form-label fw-semibold">Doctor Name <span class="text-danger">*</span></label>
         <input type="text"
                name="doctor_name"

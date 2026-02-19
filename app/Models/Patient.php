@@ -33,7 +33,6 @@ class Patient extends Model
         'status',
         'active_case',
         'photo',
-        'type',
     ];
 
     protected $casts = [

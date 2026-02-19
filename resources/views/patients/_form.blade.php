@@ -3,13 +3,14 @@
     /* ── Photo panel ── */
     .photo-panel {
         position: sticky;
-        top: 116px; /* topbar + subnav height */
+        top: 116px;
+        max-width: 160px;
     }
     .photo-upload-box {
         position: relative;
         width: 100%;
         aspect-ratio: 3 / 4;
-        border-radius: 16px;
+        border-radius: 12px;
         overflow: hidden;
         background: #f1f5f9;
         border: 2px dashed #cbd5e1;
@@ -25,7 +26,7 @@
         height: 100%;
         object-fit: cover;
         display: block;
-        border-radius: 14px;
+        border-radius: 10px;
     }
     .photo-placeholder {
         width: 100%;
@@ -34,12 +35,12 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 6px;
         color: #94a3b8;
         user-select: none;
     }
-    .photo-placeholder i { font-size: 3.5rem; }
-    .photo-placeholder span { font-size: .82rem; font-weight: 500; }
+    .photo-placeholder i { font-size: 2.2rem; }
+    .photo-placeholder span { font-size: .72rem; font-weight: 500; }
     /* Hover overlay */
     .photo-upload-box .photo-overlay {
         position: absolute;
@@ -49,15 +50,15 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 4px;
         color: #fff;
         opacity: 0;
         transition: opacity .2s;
-        border-radius: 14px;
+        border-radius: 10px;
     }
     .photo-upload-box:hover .photo-overlay { opacity: 1; }
-    .photo-overlay i { font-size: 1.8rem; }
-    .photo-overlay span { font-size: .8rem; font-weight: 600; letter-spacing: .3px; }
+    .photo-overlay i { font-size: 1.4rem; }
+    .photo-overlay span { font-size: .72rem; font-weight: 600; letter-spacing: .3px; }
 
     /* ── Section headings ── */
     .form-section-title {
@@ -80,7 +81,7 @@
     {{-- ════════════════════════════════
          LEFT — Photo Panel
     ════════════════════════════════ --}}
-    <div class="col-md-4 col-lg-3">
+    <div class="col-md-3 col-lg-2">
         <div class="photo-panel">
 
             {{-- Big rectangle photo box --}}
@@ -123,26 +124,6 @@
                 <div class="text-danger text-center mt-1" style="font-size:.82rem;">{{ $message }}</div>
             @enderror
 
-            {{-- Type (OPD / IPD) --}}
-            <div class="mt-3">
-                <label class="form-label fw-semibold mb-1">Patient Type <span class="text-danger">*</span></label>
-                <div class="d-flex gap-2">
-                    <div class="form-check flex-fill">
-                        <input class="form-check-input" type="radio" name="type" id="typeOPD" value="OPD"
-                               {{ old('type', $patient->type ?? 'OPD') === 'OPD' ? 'checked' : '' }} required>
-                        <label class="form-check-label fw-semibold text-info" for="typeOPD">OPD</label>
-                    </div>
-                    <div class="form-check flex-fill">
-                        <input class="form-check-input" type="radio" name="type" id="typeIPD" value="IPD"
-                               {{ old('type', $patient->type ?? '') === 'IPD' ? 'checked' : '' }}>
-                        <label class="form-check-label fw-semibold" style="color:#8b5cf6;" for="typeIPD">IPD</label>
-                    </div>
-                </div>
-                @error('type')
-                    <div class="text-danger mt-1" style="font-size:.82rem;">{{ $message }}</div>
-                @enderror
-            </div>
-
             {{-- Status --}}
             <div class="mt-3">
                 <label class="form-label fw-semibold mb-1">Status <span class="text-danger">*</span></label>
@@ -159,18 +140,26 @@
     {{-- ════════════════════════════════
          RIGHT — Form Fields
     ════════════════════════════════ --}}
-    <div class="col-md-8 col-lg-9">
+    <div class="col-md-9 col-lg-10">
 
         {{-- ── Personal Information ── --}}
         <div class="form-section-title">Personal Information</div>
         <div class="row">
             <div class="col-sm-6 mb-3">
-                <label class="form-label">Patient ID <span class="text-danger">*</span></label>
-                <input type="text" name="patient_id"
-                       class="form-control @error('patient_id') is-invalid @enderror"
-                       value="{{ old('patient_id', $patient->patient_id ?? '') }}"
-                       placeholder="e.g. PAT-00123" required>
-                @error('patient_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label class="form-label">
+                    Patient ID
+                    <span class="badge bg-secondary ms-1" style="font-size:.6rem;vertical-align:middle;">Auto</span>
+                </label>
+                @if(isset($patient))
+                    {{-- Edit: show existing ID, not submitted --}}
+                    <input type="text" class="form-control bg-light text-muted"
+                           value="{{ $patient->patient_id }}" disabled>
+                @else
+                    {{-- Create: submit the previewed ID; server uses it if still free --}}
+                    <input type="hidden" name="patient_id" value="{{ $patientId ?? '' }}">
+                    <input type="text" class="form-control bg-light"
+                           value="{{ $patientId ?? '' }}" readonly>
+                @endif
             </div>
             <div class="col-sm-3 mb-3">
                 <label class="form-label">Given Name <span class="text-danger">*</span></label>

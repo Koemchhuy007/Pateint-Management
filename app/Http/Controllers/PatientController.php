@@ -17,7 +17,6 @@ class PatientController extends Controller
             ->withMax('visits', 'visit_date')
             ->search($request->search)
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
-            ->when($request->type,   fn ($q) => $q->where('type',   $request->type))
             ->latest()
             ->paginate(15)
             ->withQueryString();
@@ -28,13 +27,13 @@ class PatientController extends Controller
     public function create()
     {
         $provinces = Province::orderBy('name')->get();
-        return view('patients.create', compact('provinces'));
+        $patientId = $this->generatePatientId();
+        return view('patients.create', compact('provinces', 'patientId'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'patient_id'              => ['required', 'string', 'max:50', 'unique:patients,patient_id'],
             'surname'                 => ['required', 'string', 'max:100'],
             'given_name'              => ['required', 'string', 'max:100'],
             'date_of_birth'           => ['required', 'date', 'before:today'],
@@ -53,9 +52,14 @@ class PatientController extends Controller
             'medical_notes'           => ['nullable', 'string'],
             'insurance_info'          => ['nullable', 'string', 'max:255'],
             'status'                  => ['required', Rule::in(['active', 'inactive', 'archived'])],
-            'type'                    => ['required', Rule::in(['OPD', 'IPD'])],
             'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        // Use the ID previewed on the form if it is still free; otherwise generate a fresh one
+        $submitted = $request->input('patient_id');
+        $validated['patient_id'] = ($submitted && !Patient::where('patient_id', $submitted)->exists())
+            ? $submitted
+            : $this->generatePatientId();
 
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('patients/photos', 'public');
@@ -83,7 +87,6 @@ class PatientController extends Controller
     public function update(Request $request, Patient $patient)
     {
         $validated = $request->validate([
-            'patient_id'              => ['required', 'string', 'max:50', Rule::unique('patients', 'patient_id')->ignore($patient->id)],
             'surname'                 => ['required', 'string', 'max:100'],
             'given_name'              => ['required', 'string', 'max:100'],
             'date_of_birth'           => ['required', 'date', 'before:today'],
@@ -102,7 +105,6 @@ class PatientController extends Controller
             'medical_notes'           => ['nullable', 'string'],
             'insurance_info'          => ['nullable', 'string', 'max:255'],
             'status'                  => ['required', Rule::in(['active', 'inactive', 'archived'])],
-            'type'                    => ['required', Rule::in(['OPD', 'IPD'])],
             'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
@@ -150,5 +152,24 @@ class PatientController extends Controller
 
         return redirect()->route('patients.index')
             ->with('success', 'Case discarded for ' . $patient->full_name . '.');
+    }
+
+    private function generatePatientId(): string
+    {
+        // Find the highest numeric suffix across ALL existing patient IDs
+        $max = 0;
+        Patient::select('patient_id')->each(function ($p) use (&$max) {
+            if (preg_match('/(\d+)$/', $p->patient_id, $m)) {
+                $max = max($max, (int) $m[1]);
+            }
+        });
+
+        // Increment and keep looping until we land on a slot that isn't taken
+        do {
+            $max++;
+            $candidate = 'PAT-' . str_pad($max, 5, '0', STR_PAD_LEFT);
+        } while (Patient::where('patient_id', $candidate)->exists());
+
+        return $candidate;
     }
 }

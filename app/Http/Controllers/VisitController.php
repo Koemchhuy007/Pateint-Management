@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\PatientVisit;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class VisitController extends Controller
 {
@@ -17,6 +18,7 @@ class VisitController extends Controller
     {
         $validated = $request->validate([
             'visit_date'     => ['required', 'date'],
+            'visit_type'     => ['required', Rule::in(['OPD', 'IPD'])],
             'reason'         => ['required', 'string', 'max:500'],
             'diagnosis'      => ['nullable', 'string'],
             'treatment'      => ['nullable', 'string'],
@@ -50,6 +52,7 @@ class VisitController extends Controller
 
         $validated = $request->validate([
             'visit_date'     => ['required', 'date'],
+            'visit_type'     => ['required', Rule::in(['OPD', 'IPD'])],
             'reason'         => ['required', 'string', 'max:500'],
             'diagnosis'      => ['nullable', 'string'],
             'treatment'      => ['nullable', 'string'],
@@ -63,6 +66,17 @@ class VisitController extends Controller
         return redirect()
             ->route('patients.show', $patient)
             ->with('success', 'Visit updated successfully.');
+    }
+
+    public function discharge(Patient $patient, PatientVisit $visit)
+    {
+        $this->authorizeVisit($patient, $visit);
+
+        $visit->update(['discharge_date' => now()->toDateString()]);
+
+        return redirect()
+            ->route('patients.show', $patient)
+            ->with('success', 'Visit discharged on ' . now()->format('d/m/Y') . '.');
     }
 
     public function destroy(Patient $patient, PatientVisit $visit)
