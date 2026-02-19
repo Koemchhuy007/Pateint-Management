@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
@@ -13,10 +14,12 @@ class PatientController extends Controller
     {
         $patients = Patient::query()
             ->with(['province', 'district', 'community', 'village'])
+            ->withMax('visits', 'visit_date')
             ->search($request->search)
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            ->when($request->type,   fn ($q) => $q->where('type',   $request->type))
             ->latest()
-            ->paginate(10)
+            ->paginate(15)
             ->withQueryString();
 
         return view('patients.index', compact('patients'));
@@ -31,26 +34,32 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'patient_id' => ['required', 'string', 'max:50', 'unique:patients,patient_id'],
-            'surname' => ['required', 'string', 'max:100'],
-            'given_name' => ['required', 'string', 'max:100'],
-            'date_of_birth' => ['required', 'date', 'before:today'],
-            'sex' => ['required', Rule::in(['male', 'female', 'other'])],
-            'personal_status' => ['nullable', Rule::in(['single', 'married', 'divorced'])],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string'],
-            'province_id' => ['nullable', 'exists:provinces,id'],
-            'district_id' => ['nullable', 'exists:districts,id'],
-            'community_id' => ['nullable', 'exists:communities,id'],
-            'village_id' => ['nullable', 'exists:villages,id'],
-            'blood_type' => ['nullable', 'string', 'max:10'],
-            'emergency_contact_name' => ['nullable', 'string', 'max:100'],
+            'patient_id'              => ['required', 'string', 'max:50', 'unique:patients,patient_id'],
+            'surname'                 => ['required', 'string', 'max:100'],
+            'given_name'              => ['required', 'string', 'max:100'],
+            'date_of_birth'           => ['required', 'date', 'before:today'],
+            'sex'                     => ['required', Rule::in(['male', 'female', 'other'])],
+            'personal_status'         => ['nullable', Rule::in(['single', 'married', 'divorced'])],
+            'email'                   => ['nullable', 'email', 'max:255'],
+            'phone'                   => ['nullable', 'string', 'max:20'],
+            'address'                 => ['nullable', 'string'],
+            'province_id'             => ['nullable', 'exists:provinces,id'],
+            'district_id'             => ['nullable', 'exists:districts,id'],
+            'community_id'            => ['nullable', 'exists:communities,id'],
+            'village_id'              => ['nullable', 'exists:villages,id'],
+            'blood_type'              => ['nullable', 'string', 'max:10'],
+            'emergency_contact_name'  => ['nullable', 'string', 'max:100'],
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
-            'medical_notes' => ['nullable', 'string'],
-            'insurance_info' => ['nullable', 'string', 'max:255'],
-            'status' => ['required', Rule::in(['active', 'inactive', 'archived'])],
+            'medical_notes'           => ['nullable', 'string'],
+            'insurance_info'          => ['nullable', 'string', 'max:255'],
+            'status'                  => ['required', Rule::in(['active', 'inactive', 'archived'])],
+            'type'                    => ['required', Rule::in(['OPD', 'IPD'])],
+            'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        if ($request->hasFile('photo')) {
+            $validated['photo'] = $request->file('photo')->store('patients/photos', 'public');
+        }
 
         Patient::create($validated);
 
@@ -60,7 +69,7 @@ class PatientController extends Controller
 
     public function show(Patient $patient)
     {
-        $patient->load(['province', 'district', 'community', 'village']);
+        $patient->load(['province', 'district', 'community', 'village', 'visits']);
         return view('patients.show', compact('patient'));
     }
 
@@ -74,38 +83,72 @@ class PatientController extends Controller
     public function update(Request $request, Patient $patient)
     {
         $validated = $request->validate([
-            'patient_id' => ['required', 'string', 'max:50', Rule::unique('patients', 'patient_id')->ignore($patient->id)],
-            'surname' => ['required', 'string', 'max:100'],
-            'given_name' => ['required', 'string', 'max:100'],
-            'date_of_birth' => ['required', 'date', 'before:today'],
-            'sex' => ['required', Rule::in(['male', 'female', 'other'])],
-            'personal_status' => ['nullable', Rule::in(['single', 'married', 'divorced'])],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string'],
-            'province_id' => ['nullable', 'exists:provinces,id'],
-            'district_id' => ['nullable', 'exists:districts,id'],
-            'community_id' => ['nullable', 'exists:communities,id'],
-            'village_id' => ['nullable', 'exists:villages,id'],
-            'blood_type' => ['nullable', 'string', 'max:10'],
-            'emergency_contact_name' => ['nullable', 'string', 'max:100'],
+            'patient_id'              => ['required', 'string', 'max:50', Rule::unique('patients', 'patient_id')->ignore($patient->id)],
+            'surname'                 => ['required', 'string', 'max:100'],
+            'given_name'              => ['required', 'string', 'max:100'],
+            'date_of_birth'           => ['required', 'date', 'before:today'],
+            'sex'                     => ['required', Rule::in(['male', 'female', 'other'])],
+            'personal_status'         => ['nullable', Rule::in(['single', 'married', 'divorced'])],
+            'email'                   => ['nullable', 'email', 'max:255'],
+            'phone'                   => ['nullable', 'string', 'max:20'],
+            'address'                 => ['nullable', 'string'],
+            'province_id'             => ['nullable', 'exists:provinces,id'],
+            'district_id'             => ['nullable', 'exists:districts,id'],
+            'community_id'            => ['nullable', 'exists:communities,id'],
+            'village_id'              => ['nullable', 'exists:villages,id'],
+            'blood_type'              => ['nullable', 'string', 'max:10'],
+            'emergency_contact_name'  => ['nullable', 'string', 'max:100'],
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
-            'medical_notes' => ['nullable', 'string'],
-            'insurance_info' => ['nullable', 'string', 'max:255'],
-            'status' => ['required', Rule::in(['active', 'inactive', 'archived'])],
+            'medical_notes'           => ['nullable', 'string'],
+            'insurance_info'          => ['nullable', 'string', 'max:255'],
+            'status'                  => ['required', Rule::in(['active', 'inactive', 'archived'])],
+            'type'                    => ['required', Rule::in(['OPD', 'IPD'])],
+            'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        if ($request->hasFile('photo')) {
+            // Delete old photo if one exists
+            if ($patient->photo) {
+                Storage::disk('public')->delete($patient->photo);
+            }
+            $validated['photo'] = $request->file('photo')->store('patients/photos', 'public');
+        }
 
         $patient->update($validated);
 
-        return redirect()->route('patients.index')
+        return redirect()->route('patients.show', $patient)
             ->with('success', 'Patient updated successfully.');
     }
 
     public function destroy(Patient $patient)
     {
+        if ($patient->photo) {
+            Storage::disk('public')->delete($patient->photo);
+        }
         $patient->delete();
 
         return redirect()->route('patients.index')
             ->with('success', 'Patient deleted successfully.');
+    }
+
+    public function openCase(Patient $patient)
+    {
+        $patient->update(['active_case' => true]);
+        $patient->load('visits');
+        return view('patients.case', compact('patient'));
+    }
+
+    public function showCase(Patient $patient)
+    {
+        $patient->load('visits');
+        return view('patients.case', compact('patient'));
+    }
+
+    public function discardCase(Patient $patient)
+    {
+        $patient->update(['active_case' => false]);
+
+        return redirect()->route('patients.index')
+            ->with('success', 'Case discarded for ' . $patient->full_name . '.');
     }
 }

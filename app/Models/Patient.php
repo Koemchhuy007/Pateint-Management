@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Patient extends Model
 {
@@ -30,10 +31,14 @@ class Patient extends Model
         'medical_notes',
         'insurance_info',
         'status',
+        'active_case',
+        'photo',
+        'type',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
+        'active_case'   => 'boolean',
     ];
 
     public function province(): BelongsTo
@@ -54,6 +59,18 @@ class Patient extends Model
     public function village(): BelongsTo
     {
         return $this->belongsTo(Village::class);
+    }
+
+    public function visits(): HasMany
+    {
+        return $this->hasMany(PatientVisit::class)->latest('visit_date');
+    }
+
+    public function getPhotoUrlAttribute(): ?string
+    {
+        return $this->photo
+            ? asset('storage/' . $this->photo)
+            : null;
     }
 
     public function getFullNameAttribute(): string
