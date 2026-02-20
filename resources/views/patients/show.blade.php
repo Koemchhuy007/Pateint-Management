@@ -120,29 +120,12 @@
                         {{-- Name + badges --}}
                         <div style="min-width:0;">
                             <h6 class="mb-1 fw-bold" style="line-height:1.3;">{{ $patient->full_name }}</h6>
-                            <div class="d-flex gap-1 flex-wrap mb-2">
-                                <span class="badge badge-{{ $patient->status }}">{{ ucfirst($patient->status) }}</span>
-                                @if($patient->active_case)
-                                    <span class="badge bg-success">
-                                        <i class="bi bi-folder2-open me-1"></i>Active
-                                    </span>
-                                @endif
-                            </div>
                             {{-- Action buttons inside the card --}}
                             <div class="d-flex gap-1 flex-wrap">
                                 <a href="{{ route('patients.edit', $patient) }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-pencil me-1"></i>Edit
                                 </a>
-                                @if($patient->active_case)
-                                    <form action="{{ route('patients.case.discard', $patient) }}" method="POST" class="d-inline"
-                                          onsubmit="return confirm('Discharge this case for {{ $patient->full_name }}?');">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="bi bi-box-arrow-right me-1"></i>Discharge
-                                        </button>
-                                    </form>
-                                @endif
-                                
+
                             </div>
                         </div>
                     </div>
@@ -230,7 +213,7 @@
                             </thead>
                             <tbody>
                                 @foreach($patient->visits as $i => $visit)
-                                @php $isActive = ($i === 0 && $patient->active_case); @endphp
+                                @php $isActive = !$visit->discharge_date; @endphp
                                 <tr class="{{ $isActive ? 'visit-active-row' : '' }}">
                                     <td class="text-muted small">{{ $i + 1 }}</td>
                                     <td>

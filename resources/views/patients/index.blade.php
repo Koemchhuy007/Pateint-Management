@@ -26,9 +26,8 @@
             <div class="col-md-2">
                 <select name="status" class="form-select">
                     <option value="">All statuses</option>
-                    <option value="active"   {{ request('status') === 'active'   ? 'selected' : '' }}>Active</option>
-                    <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
-                    <option value="archived" {{ request('status') === 'archived' ? 'selected' : '' }}>Archived</option>
+                    <option value="active"   {{ request('status') === 'active'   ? 'selected' : '' }}>Active Case</option>
+                    <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Discharged</option>
                 </select>
             </div>
             <div class="col-md-2">
@@ -45,6 +44,7 @@
                         <th class="text-center" style="width:50px">#</th>
                         <th>Last Visit</th>
                         <th>Patient Name</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Sex</th>
                         <th class="text-center">Age</th>
                         <th>Address</th>
@@ -74,8 +74,14 @@
                             <td>
                                 <div class="fw-semibold">{{ $patient->full_name }}</div>
                                 <div class="text-muted" style="font-size:.75rem;">{{ $patient->patient_id }}</div>
-                                @if($patient->active_case)
-                                    <span class="badge bg-warning text-dark" style="font-size:.62rem;">Active Case</span>
+                            </td>
+
+                            {{-- Status --}}
+                            <td class="text-center">
+                                @if($patient->undischarged_count > 0)
+                                    <span class="badge bg-success">Active Case</span>
+                                @else
+                                    <span class="badge bg-secondary">Discharged</span>
                                 @endif
                             </td>
 
@@ -131,7 +137,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
+                            <td colspan="8" class="text-center py-5 text-muted">
                                 <i class="bi bi-inbox display-4 d-block mb-2"></i>
                                 No patients found.
                                 <a href="{{ route('patients.create') }}">Add your first patient</a>

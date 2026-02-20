@@ -128,9 +128,8 @@
             <div class="mt-3">
                 <label class="form-label fw-semibold mb-1">Status <span class="text-danger">*</span></label>
                 <select name="status" class="form-select @error('status') is-invalid @enderror" required>
-                    <option value="active"   {{ old('status', $patient->status ?? 'active') == 'active'   ? 'selected' : '' }}>Active</option>
-                    <option value="inactive" {{ old('status', $patient->status ?? '')        == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                    <option value="archived" {{ old('status', $patient->status ?? '')        == 'archived' ? 'selected' : '' }}>Archived</option>
+                    <option value="active"   {{ old('status', $patient->status ?? 'active') == 'active'   ? 'selected' : '' }}>Active Case</option>
+                    <option value="inactive" {{ old('status', $patient->status ?? '')        == 'inactive' ? 'selected' : '' }}>Discharged</option>
                 </select>
             </div>
 

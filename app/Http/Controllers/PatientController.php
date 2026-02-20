@@ -15,6 +15,7 @@ class PatientController extends Controller
         $patients = Patient::query()
             ->with(['province', 'district', 'community', 'village'])
             ->withMax('visits', 'visit_date')
+            ->withCount(['visits as undischarged_count' => fn ($q) => $q->whereNull('discharge_date')])
             ->search($request->search)
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->latest()
@@ -51,7 +52,7 @@ class PatientController extends Controller
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
             'medical_notes'           => ['nullable', 'string'],
             'insurance_info'          => ['nullable', 'string', 'max:255'],
-            'status'                  => ['required', Rule::in(['active', 'inactive', 'archived'])],
+            'status'                  => ['required', Rule::in(['active', 'inactive'])],
             'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
@@ -104,7 +105,7 @@ class PatientController extends Controller
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
             'medical_notes'           => ['nullable', 'string'],
             'insurance_info'          => ['nullable', 'string', 'max:255'],
-            'status'                  => ['required', Rule::in(['active', 'inactive', 'archived'])],
+            'status'                  => ['required', Rule::in(['active', 'inactive'])],
             'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
