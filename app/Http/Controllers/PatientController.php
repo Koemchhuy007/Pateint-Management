@@ -52,9 +52,10 @@ class PatientController extends Controller
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
             'medical_notes'           => ['nullable', 'string'],
             'insurance_info'          => ['nullable', 'string', 'max:255'],
-            'status'                  => ['required', Rule::in(['active', 'inactive'])],
             'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        $validated['status'] = 'active';
 
         // Use the ID previewed on the form if it is still free; otherwise generate a fresh one
         $submitted = $request->input('patient_id');
@@ -105,7 +106,6 @@ class PatientController extends Controller
             'emergency_contact_phone' => ['nullable', 'string', 'max:20'],
             'medical_notes'           => ['nullable', 'string'],
             'insurance_info'          => ['nullable', 'string', 'max:255'],
-            'status'                  => ['required', Rule::in(['active', 'inactive'])],
             'photo'                   => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 

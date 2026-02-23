@@ -1,324 +1,318 @@
 @push('styles')
 <style>
-    /* ── Photo panel ── */
-    .photo-panel {
-        position: sticky;
-        top: 116px;
-        max-width: 160px;
-    }
-    .photo-upload-box {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 3 / 4;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #f1f5f9;
-        border: 2px dashed #cbd5e1;
-        cursor: pointer;
-        transition: border-color .2s, box-shadow .2s;
-    }
-    .photo-upload-box:hover {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 4px rgba(37,99,235,.1);
-    }
-    .photo-upload-box img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        border-radius: 10px;
-    }
-    .photo-placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        color: #94a3b8;
-        user-select: none;
-    }
-    .photo-placeholder i { font-size: 2.2rem; }
-    .photo-placeholder span { font-size: .72rem; font-weight: 500; }
-    /* Hover overlay */
-    .photo-upload-box .photo-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,.42);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        color: #fff;
-        opacity: 0;
-        transition: opacity .2s;
-        border-radius: 10px;
-    }
-    .photo-upload-box:hover .photo-overlay { opacity: 1; }
-    .photo-overlay i { font-size: 1.4rem; }
-    .photo-overlay span { font-size: .72rem; font-weight: 600; letter-spacing: .3px; }
+/* ══ Photo upload ══ */
+.photo-upload-wrap {
+    position: relative;
+    width: 160px;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s;
+    margin: 0 auto;
+}
+.photo-upload-wrap:hover {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,.1);
+}
+.photo-upload-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.photo-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px; color: #94a3b8; user-select: none;
+}
+.photo-placeholder i { font-size: 2.4rem; }
+.photo-placeholder span { font-size: .68rem; font-weight: 500; text-align: center; line-height: 1.3; }
+.photo-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px; color: #fff;
+    opacity: 0; transition: opacity .2s;
+}
+.photo-upload-wrap:hover .photo-overlay { opacity: 1; }
+.photo-overlay i { font-size: 1.2rem; }
+.photo-overlay span { font-size: .68rem; font-weight: 600; }
 
-    /* ── Section headings ── */
-    .form-section-title {
-        font-size: .72rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: #94a3b8;
-        padding-bottom: 6px;
-        border-bottom: 1px solid #e2e8f0;
-        margin-bottom: 14px;
-        margin-top: 20px;
-    }
-    .form-section-title:first-child { margin-top: 0; }
+/* ══ Form section card ══ */
+.form-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+}
+.form-section-header {
+    display: flex; align-items: center; gap: 8px;
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: #64748b;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #f1f5f9;
+}
+.form-section-header .section-icon {
+    width: 26px; height: 26px;
+    background: #eff6ff; color: #2563eb;
+    border-radius: 7px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .85rem;
+    flex-shrink: 0;
+}
 </style>
 @endpush
 
-<div class="row g-4">
+{{-- ── Personal Information ── --}}
+<div class="form-section">
+    <div class="form-section-header">
+        <span class="section-icon"><i class="bi bi-person-fill"></i></span>
+        Personal Information
+    </div>
+    <div class="row g-3 align-items-start">
 
-    {{-- ════════════════════════════════
-         LEFT — Photo Panel
-    ════════════════════════════════ --}}
-    <div class="col-md-3 col-lg-2">
-        <div class="photo-panel">
+        {{-- Fields col --}}
+        <div class="col-md-9">
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">
+                        Patient ID
+                        <span class="badge bg-secondary ms-1" style="font-size:.58rem;vertical-align:middle;">Auto</span>
+                    </label>
+                    @if(isset($patient) && $patient->exists)
+                        <input type="text" class="form-control bg-light text-muted"
+                               value="{{ $patient->patient_id }}" disabled>
+                    @else
+                        <input type="hidden" name="patient_id" value="{{ $patientId ?? '' }}">
+                        <input type="text" class="form-control bg-light"
+                               value="{{ $patientId ?? '' }}" readonly style="color:#64748b;">
+                    @endif
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">
+                        Given Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" name="given_name"
+                           class="form-control @error('given_name') is-invalid @enderror"
+                           value="{{ old('given_name', $patient->given_name ?? '') }}" required>
+                    @error('given_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">
+                        Surname <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" name="surname"
+                           class="form-control @error('surname') is-invalid @enderror"
+                           value="{{ old('surname', $patient->surname ?? '') }}" required>
+                    @error('surname')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">
+                        Sex <span class="text-danger">*</span>
+                    </label>
+                    <select name="sex" class="form-select @error('sex') is-invalid @enderror" required>
+                        <option value="">— Select —</option>
+                        <option value="male"   {{ old('sex', $patient->sex ?? '') == 'male'   ? 'selected' : '' }}>Male</option>
+                        <option value="female" {{ old('sex', $patient->sex ?? '') == 'female' ? 'selected' : '' }}>Female</option>
+                        <option value="other"  {{ old('sex', $patient->sex ?? '') == 'other'  ? 'selected' : '' }}>Other</option>
+                    </select>
+                    @error('sex')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-4">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">
+                        Date of Birth <span class="text-danger">*</span>
+                    </label>
+                    <input type="date" name="date_of_birth"
+                           class="form-control @error('date_of_birth') is-invalid @enderror"
+                           value="{{ old('date_of_birth', optional($patient->date_of_birth ?? null)->format('Y-m-d')) }}" required>
+                    @error('date_of_birth')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-sm-2">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">Age</label>
+                    <input type="text" id="age_display" class="form-control bg-light text-muted"
+                           value="{{ isset($patient) && $patient->date_of_birth ? $patient->age . ' yrs' : '—' }}" readonly>
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">Marital Status</label>
+                    <select name="personal_status" class="form-select">
+                        <option value="">—</option>
+                        <option value="single"   {{ old('personal_status', $patient->personal_status ?? '') == 'single'   ? 'selected' : '' }}>Single</option>
+                        <option value="married"  {{ old('personal_status', $patient->personal_status ?? '') == 'married'  ? 'selected' : '' }}>Married</option>
+                        <option value="divorced" {{ old('personal_status', $patient->personal_status ?? '') == 'divorced' ? 'selected' : '' }}>Divorced</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">Blood Type</label>
+                    <select name="blood_type" class="form-select">
+                        <option value="">—</option>
+                        @foreach(['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bt)
+                            <option value="{{ $bt }}" {{ old('blood_type', $patient->blood_type ?? '') == $bt ? 'selected' : '' }}>{{ $bt }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
 
-            {{-- Big rectangle photo box --}}
-            <div class="photo-upload-box" onclick="document.getElementById('photoInput').click()">
-
-                {{-- Existing photo (edit mode) --}}
+        {{-- Photo upload col ── right side --}}
+        <div class="col-md-3 text-center">
+            <label class="form-label fw-semibold d-block mb-2" style="font-size:.83rem;">Photo</label>
+            <div class="photo-upload-wrap" onclick="document.getElementById('photoInput').click()">
                 @if(isset($patient) && $patient->photo_url)
-                    <img id="photoPreview" src="{{ $patient->photo_url }}" alt="Patient photo">
-                    <div class="photo-overlay">
-                        <i class="bi bi-camera-fill"></i>
-                        <span>Change Photo</span>
-                    </div>
+                    <img id="photoPreview" src="{{ $patient->photo_url }}" alt="Photo">
                 @else
-                    {{-- Placeholder --}}
                     <div class="photo-placeholder" id="photoPlaceholder">
                         <i class="bi bi-person-bounding-box"></i>
-                        <span>Click to upload photo</span>
+                        <span>Click to upload</span>
                     </div>
-                    {{-- Preview (hidden until file chosen) --}}
-                    <img id="photoPreview" src="" alt="" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:14px;">
-                    <div class="photo-overlay">
-                        <i class="bi bi-camera-fill"></i>
-                        <span>Upload Photo</span>
-                    </div>
+                    <img id="photoPreview" src="" alt=""
+                         style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
                 @endif
-
+                <div class="photo-overlay">
+                    <i class="bi bi-camera-fill"></i>
+                    <span>{{ isset($patient) && $patient->photo_url ? 'Change' : 'Upload' }}</span>
+                </div>
             </div>
-
-            {{-- Hidden file input --}}
-            <input type="file"
-                   id="photoInput"
-                   name="photo"
-                   accept="image/jpeg,image/png,image/jpg,image/gif"
-                   class="d-none @error('photo') is-invalid @enderror">
-
-            {{-- File name + hint --}}
-            <p id="photoFileName" class="text-muted mt-2 mb-0 text-center" style="font-size:.78rem;"></p>
-            <p class="text-muted text-center mb-0" style="font-size:.75rem;">JPG, PNG, GIF &nbsp;·&nbsp; Max 2 MB</p>
+            <input type="file" id="photoInput" name="photo"
+                   accept="image/jpeg,image/png,image/jpg,image/gif" class="d-none">
+            <p class="text-muted mt-2 mb-0" style="font-size:.7rem;">JPG, PNG · Max 2 MB</p>
             @error('photo')
-                <div class="text-danger text-center mt-1" style="font-size:.82rem;">{{ $message }}</div>
+                <div class="text-danger mt-1" style="font-size:.78rem;">{{ $message }}</div>
             @enderror
+        </div>
 
-            {{-- Status --}}
-            <div class="mt-3">
-                <label class="form-label fw-semibold mb-1">Status <span class="text-danger">*</span></label>
-                <select name="status" class="form-select @error('status') is-invalid @enderror" required>
-                    <option value="active"   {{ old('status', $patient->status ?? 'active') == 'active'   ? 'selected' : '' }}>Active Case</option>
-                    <option value="inactive" {{ old('status', $patient->status ?? '')        == 'inactive' ? 'selected' : '' }}>Discharged</option>
-                </select>
-            </div>
-
-        </div>{{-- /.photo-panel --}}
     </div>
+</div>
 
-    {{-- ════════════════════════════════
-         RIGHT — Form Fields
-    ════════════════════════════════ --}}
-    <div class="col-md-9 col-lg-10">
-
-        {{-- ── Personal Information ── --}}
-        <div class="form-section-title">Personal Information</div>
-        <div class="row">
-            <div class="col-sm-6 mb-3">
-                <label class="form-label">
-                    Patient ID
-                    <span class="badge bg-secondary ms-1" style="font-size:.6rem;vertical-align:middle;">Auto</span>
-                </label>
-                @if(isset($patient))
-                    {{-- Edit: show existing ID, not submitted --}}
-                    <input type="text" class="form-control bg-light text-muted"
-                           value="{{ $patient->patient_id }}" disabled>
-                @else
-                    {{-- Create: submit the previewed ID; server uses it if still free --}}
-                    <input type="hidden" name="patient_id" value="{{ $patientId ?? '' }}">
-                    <input type="text" class="form-control bg-light"
-                           value="{{ $patientId ?? '' }}" readonly>
-                @endif
-            </div>
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">Given Name <span class="text-danger">*</span></label>
-                <input type="text" name="given_name"
-                       class="form-control @error('given_name') is-invalid @enderror"
-                       value="{{ old('given_name', $patient->given_name ?? '') }}" required>
-                @error('given_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">Surname <span class="text-danger">*</span></label>
-                <input type="text" name="surname"
-                       class="form-control @error('surname') is-invalid @enderror"
-                       value="{{ old('surname', $patient->surname ?? '') }}" required>
-                @error('surname')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">Sex <span class="text-danger">*</span></label>
-                <select name="sex" class="form-select @error('sex') is-invalid @enderror" required>
-                    <option value="">Select</option>
-                    <option value="male"   {{ old('sex', $patient->sex ?? '') == 'male'   ? 'selected' : '' }}>Male</option>
-                    <option value="female" {{ old('sex', $patient->sex ?? '') == 'female' ? 'selected' : '' }}>Female</option>
-                    <option value="other"  {{ old('sex', $patient->sex ?? '') == 'other'  ? 'selected' : '' }}>Other</option>
-                </select>
-                @error('sex')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                <input type="date" name="date_of_birth"
-                       class="form-control @error('date_of_birth') is-invalid @enderror"
-                       value="{{ old('date_of_birth', optional($patient->date_of_birth ?? null)->format('Y-m-d')) }}" required>
-                @error('date_of_birth')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
-            <div class="col-sm-2 mb-3">
-                <label class="form-label">Age</label>
-                <input type="text" id="age_display" class="form-control bg-light"
-                       value="{{ isset($patient) && $patient->date_of_birth ? $patient->age . ' yrs' : '—' }}" readonly>
-            </div>
-            <div class="col-sm-2 mb-3">
-                <label class="form-label">Marital Status</label>
-                <select name="personal_status" class="form-select @error('personal_status') is-invalid @enderror">
-                    <option value="">—</option>
-                    <option value="single"   {{ old('personal_status', $patient->personal_status ?? '') == 'single'   ? 'selected' : '' }}>Single</option>
-                    <option value="married"  {{ old('personal_status', $patient->personal_status ?? '') == 'married'  ? 'selected' : '' }}>Married</option>
-                    <option value="divorced" {{ old('personal_status', $patient->personal_status ?? '') == 'divorced' ? 'selected' : '' }}>Divorced</option>
-                </select>
-            </div>
-            <div class="col-sm-2 mb-3">
-                <label class="form-label">Blood Type</label>
-                <select name="blood_type" class="form-select @error('blood_type') is-invalid @enderror">
-                    <option value="">—</option>
-                    @foreach(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'] as $bt)
-                        <option value="{{ $bt }}" {{ old('blood_type', $patient->blood_type ?? '') == $bt ? 'selected' : '' }}>{{ $bt }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-        {{-- ── Contact ── --}}
-        <div class="form-section-title">Contact</div>
-        <div class="row">
-            <div class="col-sm-6 mb-3">
-                <label class="form-label">Phone</label>
+{{-- ── Contact ── --}}
+<div class="form-section">
+    <div class="form-section-header">
+        <span class="section-icon"><i class="bi bi-telephone-fill"></i></span>
+        Contact
+    </div>
+    <div class="row g-3">
+        <div class="col-sm-6">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Phone</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 text-muted">
+                    <i class="bi bi-phone"></i>
+                </span>
                 <input type="text" name="phone"
-                       class="form-control @error('phone') is-invalid @enderror"
-                       value="{{ old('phone', $patient->phone ?? '') }}">
+                       class="form-control border-start-0 @error('phone') is-invalid @enderror"
+                       value="{{ old('phone', $patient->phone ?? '') }}"
+                       placeholder="e.g. 012 345 678">
             </div>
-            <div class="col-sm-6 mb-3">
-                <label class="form-label">Email</label>
+        </div>
+        <div class="col-sm-6">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Email</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 text-muted">
+                    <i class="bi bi-envelope"></i>
+                </span>
                 <input type="email" name="email"
-                       class="form-control @error('email') is-invalid @enderror"
-                       value="{{ old('email', $patient->email ?? '') }}">
+                       class="form-control border-start-0 @error('email') is-invalid @enderror"
+                       value="{{ old('email', $patient->email ?? '') }}"
+                       placeholder="email@example.com">
             </div>
         </div>
+    </div>
+</div>
 
-        {{-- ── Address ── --}}
-        <div class="form-section-title">Address</div>
-        <div class="row">
-            <div class="col-12 mb-3">
-                <label class="form-label">Street / House No.</label>
-                <textarea name="address" class="form-control @error('address') is-invalid @enderror"
-                          rows="2" placeholder="Street, house number...">{{ old('address', $patient->address ?? '') }}</textarea>
-            </div>
+{{-- ── Address ── --}}
+<div class="form-section">
+    <div class="form-section-header">
+        <span class="section-icon"><i class="bi bi-geo-alt-fill"></i></span>
+        Address
+    </div>
+    <div class="row g-3">
+        <div class="col-12">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Street / House No.</label>
+            <textarea name="address" class="form-control" rows="2"
+                      placeholder="Street, house number...">{{ old('address', $patient->address ?? '') }}</textarea>
         </div>
-        <div class="row">
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">Province</label>
-                <select name="province_id" id="province_id" class="form-select @error('province_id') is-invalid @enderror">
-                    <option value="">— Province —</option>
-                    @foreach($provinces ?? [] as $p)
-                        <option value="{{ $p->id }}" {{ old('province_id', $patient->province_id ?? '') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">District</label>
-                <select name="district_id" id="district_id" class="form-select @error('district_id') is-invalid @enderror">
-                    <option value="">— District —</option>
-                    @if(isset($patient) && $patient->district)
-                        <option value="{{ $patient->district_id }}" selected>{{ $patient->district->name }}</option>
-                    @endif
-                </select>
-            </div>
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">Community</label>
-                <select name="community_id" id="community_id" class="form-select @error('community_id') is-invalid @enderror">
-                    <option value="">— Community —</option>
-                    @if(isset($patient) && $patient->community)
-                        <option value="{{ $patient->community_id }}" selected>{{ $patient->community->name }}</option>
-                    @endif
-                </select>
-            </div>
-            <div class="col-sm-3 mb-3">
-                <label class="form-label">Village</label>
-                <select name="village_id" id="village_id" class="form-select @error('village_id') is-invalid @enderror">
-                    <option value="">— Village —</option>
-                    @if(isset($patient) && $patient->village)
-                        <option value="{{ $patient->village_id }}" selected>{{ $patient->village->name }}</option>
-                    @endif
-                </select>
-            </div>
+        <div class="col-sm-3">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Province</label>
+            <select name="province_id" id="province_id" class="form-select">
+                <option value="">— Province —</option>
+                @foreach($provinces ?? [] as $p)
+                    <option value="{{ $p->id }}" {{ old('province_id', $patient->province_id ?? '') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
+                @endforeach
+            </select>
         </div>
+        <div class="col-sm-3">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">District</label>
+            <select name="district_id" id="district_id" class="form-select">
+                <option value="">— District —</option>
+                @if(isset($patient) && $patient->district)
+                    <option value="{{ $patient->district_id }}" selected>{{ $patient->district->name }}</option>
+                @endif
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Community</label>
+            <select name="community_id" id="community_id" class="form-select">
+                <option value="">— Community —</option>
+                @if(isset($patient) && $patient->community)
+                    <option value="{{ $patient->community_id }}" selected>{{ $patient->community->name }}</option>
+                @endif
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Village</label>
+            <select name="village_id" id="village_id" class="form-select">
+                <option value="">— Village —</option>
+                @if(isset($patient) && $patient->village)
+                    <option value="{{ $patient->village_id }}" selected>{{ $patient->village->name }}</option>
+                @endif
+            </select>
+        </div>
+    </div>
+</div>
 
-        {{-- ── Emergency & Insurance ── --}}
-        <div class="form-section-title">Emergency &amp; Insurance</div>
-        <div class="row">
-            <div class="col-sm-4 mb-3">
-                <label class="form-label">Emergency Contact Name</label>
-                <input type="text" name="emergency_contact_name"
-                       class="form-control @error('emergency_contact_name') is-invalid @enderror"
-                       value="{{ old('emergency_contact_name', $patient->emergency_contact_name ?? '') }}">
-            </div>
-            <div class="col-sm-4 mb-3">
-                <label class="form-label">Emergency Contact Phone</label>
-                <input type="text" name="emergency_contact_phone"
-                       class="form-control @error('emergency_contact_phone') is-invalid @enderror"
-                       value="{{ old('emergency_contact_phone', $patient->emergency_contact_phone ?? '') }}">
-            </div>
-            <div class="col-sm-4 mb-3">
-                <label class="form-label">Insurance Info</label>
-                <input type="text" name="insurance_info"
-                       class="form-control @error('insurance_info') is-invalid @enderror"
-                       value="{{ old('insurance_info', $patient->insurance_info ?? '') }}"
-                       placeholder="Provider or policy number">
-            </div>
+{{-- ── Emergency & Insurance ── --}}
+<div class="form-section">
+    <div class="form-section-header">
+        <span class="section-icon" style="background:#fff7ed;color:#ea580c;"><i class="bi bi-exclamation-triangle-fill"></i></span>
+        Emergency &amp; Insurance
+    </div>
+    <div class="row g-3">
+        <div class="col-sm-4">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Emergency Contact Name</label>
+            <input type="text" name="emergency_contact_name"
+                   class="form-control @error('emergency_contact_name') is-invalid @enderror"
+                   value="{{ old('emergency_contact_name', $patient->emergency_contact_name ?? '') }}"
+                   placeholder="Full name">
         </div>
-
-        {{-- ── Medical Notes ── --}}
-        <div class="form-section-title">Medical Notes</div>
-        <div class="mb-3">
-            <textarea name="medical_notes"
-                      class="form-control @error('medical_notes') is-invalid @enderror"
-                      rows="3"
-                      placeholder="Allergies, chronic conditions, etc.">{{ old('medical_notes', $patient->medical_notes ?? '') }}</textarea>
+        <div class="col-sm-4">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Emergency Contact Phone</label>
+            <input type="text" name="emergency_contact_phone"
+                   class="form-control @error('emergency_contact_phone') is-invalid @enderror"
+                   value="{{ old('emergency_contact_phone', $patient->emergency_contact_phone ?? '') }}"
+                   placeholder="Phone number">
         </div>
+        <div class="col-sm-4">
+            <label class="form-label fw-semibold" style="font-size:.83rem;">Insurance Info</label>
+            <input type="text" name="insurance_info"
+                   class="form-control @error('insurance_info') is-invalid @enderror"
+                   value="{{ old('insurance_info', $patient->insurance_info ?? '') }}"
+                   placeholder="Provider or policy number">
+        </div>
+    </div>
+</div>
 
-    </div>{{-- /.col right --}}
-</div>{{-- /.row --}}
+{{-- ── Medical Notes ── --}}
+<div class="form-section mb-0">
+    <div class="form-section-header">
+        <span class="section-icon" style="background:#f0fdf4;color:#16a34a;"><i class="bi bi-journal-medical"></i></span>
+        Medical Notes
+    </div>
+    <textarea name="medical_notes" class="form-control" rows="3"
+              placeholder="Allergies, chronic conditions, important notes...">{{ old('medical_notes', $patient->medical_notes ?? '') }}</textarea>
+</div>
 
 @push('scripts')
 <script>
@@ -326,16 +320,14 @@
 document.getElementById('photoInput').addEventListener('change', function () {
     const file = this.files[0];
     if (!file) return;
-    document.getElementById('photoFileName').textContent = file.name;
     const reader = new FileReader();
     reader.onload = function (e) {
-        const preview = document.getElementById('photoPreview');
+        const preview     = document.getElementById('photoPreview');
         const placeholder = document.getElementById('photoPlaceholder');
         preview.src = e.target.result;
         preview.style.display = 'block';
         preview.style.position = 'absolute';
         preview.style.inset = '0';
-        preview.style.borderRadius = '14px';
         if (placeholder) placeholder.style.display = 'none';
     };
     reader.readAsDataURL(file);
@@ -378,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const provinceId = provinceSelect.value;
         clearOptions(districtSelect, '— District —');
         clearOptions(communitySelect, '— Community —');
-        clearOptions(villageSelect,   '— Village —');
+        clearOptions(villageSelect, '— Village —');
         if (!provinceId) return Promise.resolve();
         return fetch(`${baseUrl}/address/districts?province_id=${provinceId}`)
             .then(r => r.json())
@@ -391,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function loadCommunities(selectId) {
         const districtId = districtSelect.value;
         clearOptions(communitySelect, '— Community —');
-        clearOptions(villageSelect,   '— Village —');
+        clearOptions(villageSelect, '— Village —');
         if (!districtId) return Promise.resolve();
         return fetch(`${baseUrl}/address/communities?district_id=${districtId}`)
             .then(r => r.json())

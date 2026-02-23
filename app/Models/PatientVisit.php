@@ -21,12 +21,16 @@ class PatientVisit extends Model
         'follow_up_date',
         'discharge_date',
         'notes',
+        'prescription',
+        'consulting',
     ];
 
     protected $casts = [
         'visit_date'     => 'datetime',
         'follow_up_date' => 'date',
         'discharge_date' => 'date',
+        'prescription'   => 'array',
+        'consulting'     => 'boolean',
     ];
 
     public function patient(): BelongsTo

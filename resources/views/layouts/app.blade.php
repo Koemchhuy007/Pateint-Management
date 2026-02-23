@@ -317,10 +317,9 @@
         <i class="bi bi-receipt-cutoff"></i> Invoice
         <span class="badge-soon">Soon</span>
     </a>
-    <a href="#"
-       class="subnav-item {{ request()->routeIs('drugstore.*') ? 'active' : '' }}">
+    <a href="{{ route('drugstore.index') }}"
+       class="subnav-item {{ request()->routeIs('drugstore.*') || request()->routeIs('drug-types.*') ? 'active' : '' }}">
         <i class="bi bi-capsule-pill"></i> Drugstore
-        <span class="badge-soon">Soon</span>
     </a>
     <a href="#"
        class="subnav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">

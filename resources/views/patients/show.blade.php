@@ -9,78 +9,6 @@
 
 @push('styles')
 <style>
-/* ── Info panel (right) ── */
-.info-panel {
-    position: sticky;
-    top: 116px;
-}
-
-/* ── Small photo thumbnail ── */
-.patient-photo-thumb {
-    width: 120px;
-    height: 136px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #f1f5f9;
-    border: 2px solid #e2e8f0;
-    flex-shrink: 0;
-    margin-top: 50px;
-   
-}
-
-.patient-photo-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.patient-photo-thumb .thumb-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #cbd5e1;
-}
-
-/* ── Info table ── */
-.info-table td:first-child {
-    width: 40%;
-    color: #64748b;
-    font-size: .8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-    padding-right: 8px;
-    vertical-align: top;
-}
-
-.info-table td:last-child {
-    color: #1e293b;
-    font-size: .88rem;
-}
-
-.info-table tr td {
-    padding: 5px 0;
-    border: none;
-}
-
-/* ── Section heading ── */
-.section-heading {
-    font-size: .68rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #94a3b8;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #e2e8f0;
-    margin: 14px 0 10px;
-}
-
-.section-heading:first-child {
-    margin-top: 0;
-}
-
 /* ── Active (undischarged) visit row ── */
 .visit-active-row {
     background: linear-gradient(90deg, rgba(16, 185, 129, .08) 0%, rgba(16, 185, 129, .03) 100%);
@@ -114,125 +42,7 @@
     {{-- ════════════════════════════════
          LEFT — Patient Info Panel
     ════════════════════════════════ --}}
-    <div class="col-md-3">
-        <div class="info-panel">
-            <div class="card">
-                <div class="card-body">
-                    {{-- Personal --}}
-                    <div class="row">
-                        <div class="col-md-9">
-                            <div class="section-heading">Personal</div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="d-flex gap-1 flex-wrap">
-                                <a href="{{ route('patients.edit', $patient) }}" class="btn btn-primary btn-sm">
-                                    <i class="bi bi-pencil me-1"></i>Edit
-                                </a>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                    {{-- Photo + Name side by side --}}
-                    <div class="row g-4 align-items-start">
-                        <div class="col-md-8">
-
-                            <table class="info-table w-100">
-                                <tr>
-                                    <td>Patient Name</td>
-                                    <td><code>{{  $patient->full_name}}</code></td>
-                                </tr>
-                                <tr>
-                                    <td>Patient ID</td>
-                                    <td><code>{{ $patient->patient_id }}</code></td>
-                                </tr>
-                                <tr>
-                                    <td>Date of Birth</td>
-                                    <td>{{ $patient->date_of_birth->format('d/m/Y') }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Age</td>
-                                    <td>{{ $patient->age ? $patient->age . ' years' : '—' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Sex</td>
-                                    <td>{{ ucfirst($patient->sex ?? '—') }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Marital</td>
-                                    <td>{{ ucfirst($patient->personal_status ?? '—') }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Blood Type</td>
-                                    <td>{{ $patient->blood_type ?? '—' }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex align-items-start gap-3 mb-3">
-
-                                {{-- Small rectangular photo --}}
-                                <div class="patient-photo-thumb">
-                                    @if($patient->photo_url)
-                                    <img src="{{ $patient->photo_url }}" alt="{{ $patient->full_name }}">
-                                    @else
-                                    <div class="thumb-placeholder">
-                                        <i class="bi bi-person-bounding-box" style="font-size:2rem;"></i>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-                    {{-- Contact --}}
-                    <div class="section-heading">Contact</div>
-                    <table class="info-table w-100">
-                        <tr>
-                            <td>Phone</td>
-                            <td>{{ $patient->phone ?? '—' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td style="word-break:break-all;">{{ $patient->email ?? '—' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Address</td>
-                            <td>{{ $patient->full_address ?: ($patient->address ?? '—') }}</td>
-                        </tr>
-                    </table>
-
-                    {{-- Emergency --}}
-                    <div class="section-heading">Emergency</div>
-                    <table class="info-table w-100">
-                        <tr>
-                            <td>Name</td>
-                            <td>{{ $patient->emergency_contact_name ?? '—' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Phone</td>
-                            <td>{{ $patient->emergency_contact_phone ?? '—' }}</td>
-                        </tr>
-                    </table>
-
-                    @if($patient->insurance_info)
-                    <div class="section-heading">Insurance</div>
-                    <p class="mb-0" style="font-size:.88rem;">{{ $patient->insurance_info }}</p>
-                    @endif
-
-                    @if($patient->medical_notes)
-                    <div class="section-heading">Medical Notes</div>
-                    <p class="mb-0 text-muted" style="font-size:.85rem;">{{ $patient->medical_notes }}</p>
-                    @endif
-
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('patients._info_panel')
 
     {{-- ════════════════════════════════
          RIGHT — Visit History
@@ -264,10 +74,11 @@
                             <tr>
                                 <th>#</th>
                                 <th>Date</th>
+                                <th>Discharge Date</th>
                                 <th class="text-center">Type</th>
                                 <th>Doctor</th>
+                                <th>Reason / Diagnosis / Treatment</th>
                                 <th>Follow-up</th>
-                                <th>Discharge Date</th>
                                 <th style="width:130px">Actions</th>
                             </tr>
                         </thead>
@@ -278,12 +89,20 @@
                                 <td class="text-muted small">{{ $i + 1 }}</td>
                                 <td>
                                     <div class="fw-semibold">{{ $visit->visit_date->format('d/m/Y') }}</div>
-                                    <div class="text-muted" style="font-size:.78rem;">
-                                        {{ $visit->visit_date->format('H:i') }}</div>
+                                    <div class="text-muted" style="font-size:.78rem;">{{ $visit->visit_date->format('H:i') }}</div>
                                     @if($isActive)
                                     <span class="active-case-badge">
                                         <i class="bi bi-circle-fill" style="font-size:.45rem;"></i> Active
                                     </span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($visit->discharge_date)
+                                    <span class="text-success">
+                                        <i class="bi bi-check-circle me-1"></i>{{ $visit->discharge_date->format('d/m/Y') }}
+                                    </span>
+                                    @else
+                                    <span class="text-muted">—</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -296,27 +115,42 @@
                                     @endif
                                 </td>
                                 <td>{{ $visit->doctor_name }}</td>
+
+                                {{-- Reason / Diagnosis / Treatment --}}
+                                <td style="max-width:260px;">
+                                    @if($visit->reason)
+                                    <div style="font-size:.8rem;">
+                                        <span class="text-muted fw-semibold">Reason:</span>
+                                        {{ Str::limit($visit->reason, 60) }}
+                                    </div>
+                                    @endif
+                                    @if($visit->diagnosis)
+                                    <div style="font-size:.8rem;" class="mt-1">
+                                        <span class="text-muted fw-semibold">Diagnosis:</span>
+                                        {{ Str::limit($visit->diagnosis, 60) }}
+                                    </div>
+                                    @endif
+                                    @if($visit->treatment)
+                                    <div style="font-size:.8rem;" class="mt-1">
+                                        <span class="text-muted fw-semibold">Treatment:</span>
+                                        {{ Str::limit($visit->treatment, 80) }}
+                                    </div>
+                                    @endif
+                                    @if(!$visit->reason && !$visit->diagnosis && !$visit->treatment)
+                                    <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+
                                 <td>
                                     @if($visit->follow_up_date)
-                                    <span
-                                        class="{{ $visit->follow_up_date->isPast() ? 'text-danger' : 'text-success' }}">
-                                        <i
-                                            class="bi bi-calendar-event me-1"></i>{{ $visit->follow_up_date->format('d/m/Y') }}
+                                    <span class="{{ $visit->follow_up_date->isPast() ? 'text-danger' : 'text-success' }}">
+                                        <i class="bi bi-calendar-event me-1"></i>{{ $visit->follow_up_date->format('d/m/Y') }}
                                     </span>
                                     @else
                                     <span class="text-muted">—</span>
                                     @endif
                                 </td>
-                                <td>
-                                    @if($visit->discharge_date)
-                                    <span class="text-success">
-                                        <i
-                                            class="bi bi-check-circle me-1"></i>{{ $visit->discharge_date->format('d/m/Y') }}
-                                    </span>
-                                    @else
-                                    <span class="text-muted">—</span>
-                                    @endif
-                                </td>
+
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('patients.visits.show', [$patient, $visit]) }}"
@@ -332,8 +166,7 @@
                                             method="POST" class="d-inline"
                                             onsubmit="return confirm('Mark this visit as discharged today?');">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-warning"
-                                                title="Discard / Discharge">
+                                            <button type="submit" class="btn btn-outline-warning" title="Discharge">
                                                 <i class="bi bi-box-arrow-right"></i>
                                             </button>
                                         </form>
