@@ -13,6 +13,9 @@ class DatabaseSeeder extends Seeder
             AddressSeeder::class,
             PatientSeeder::class,
             DrugstoreSeeder::class,
+            PaymentTypeSeeder::class,
+            ServiceGroupSeeder::class,
+            RolePermissionSeeder::class,
         ]);
     }
 }

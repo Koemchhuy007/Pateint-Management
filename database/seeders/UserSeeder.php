@@ -10,13 +10,42 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(
-            ['username' => 'admin'],
+        $users = [
             [
-                'name' => 'Admin',
-                'email' => 'admin@patient-management.local',
+                'name'     => 'System Administrator',
+                'username' => 'admin',
+                'email'    => 'admin@clinic.local',
                 'password' => Hash::make('password'),
-            ]
-        );
+                'role'     => 'system_admin',
+            ],
+            [
+                'name'     => 'Dr. Sophea Chan',
+                'username' => 'dr_sophea',
+                'email'    => 'sophea@clinic.local',
+                'password' => Hash::make('password'),
+                'role'     => 'doctor',
+            ],
+            [
+                'name'     => 'Dr. Dara Meas',
+                'username' => 'dr_dara',
+                'email'    => 'dara@clinic.local',
+                'password' => Hash::make('password'),
+                'role'     => 'doctor',
+            ],
+            [
+                'name'     => 'Cashier Bopha',
+                'username' => 'cashier_bopha',
+                'email'    => 'bopha@clinic.local',
+                'password' => Hash::make('password'),
+                'role'     => 'cashier',
+            ],
+        ];
+
+        foreach ($users as $data) {
+            User::firstOrCreate(
+                ['username' => $data['username']],
+                $data
+            );
+        }
     }
 }

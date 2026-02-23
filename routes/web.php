@@ -5,6 +5,11 @@ use App\Http\Controllers\DrugController;
 use App\Http\Controllers\DrugTypeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\VisitController;
+use App\Http\Controllers\Settings\PaymentTypeController;
+use App\Http\Controllers\Settings\RolePermissionController;
+use App\Http\Controllers\Settings\ServiceGroupController;
+use App\Http\Controllers\Settings\ServiceController;
+use App\Http\Controllers\Settings\UserController as SettingUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,24 +23,67 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-    Route::get('address/districts', [\App\Http\Controllers\AddressController::class, 'districts'])->name('address.districts');
-    Route::get('address/communities', [\App\Http\Controllers\AddressController::class, 'communities'])->name('address.communities');
-    Route::get('address/villages', [\App\Http\Controllers\AddressController::class, 'villages'])->name('address.villages');
 
-    Route::resource('patients', PatientController::class);
-    Route::post('patients/{patient}/case/open',    [PatientController::class, 'openCase'])->name('patients.case.open');
-    Route::get('patients/{patient}/case',          [PatientController::class, 'showCase'])->name('patients.case.show');
-    Route::post('patients/{patient}/case/discard', [PatientController::class, 'discardCase'])->name('patients.case.discard');
-    Route::resource('patients.visits', VisitController::class)->except(['index']);
-    Route::post('patients/{patient}/visits/{visit}/discharge', [VisitController::class, 'discharge'])->name('patients.visits.discharge');
+    // Address API (no feature restriction — used across features)
+    Route::get('address/districts',  [\App\Http\Controllers\AddressController::class, 'districts'])->name('address.districts');
+    Route::get('address/communities',[\App\Http\Controllers\AddressController::class, 'communities'])->name('address.communities');
+    Route::get('address/villages',   [\App\Http\Controllers\AddressController::class, 'villages'])->name('address.villages');
 
-    // Drugstore
-    Route::resource('drugstore', DrugController::class)
-        ->parameters(['drugstore' => 'drug'])
-        ->except(['show']);
+    // Drug search API (used in visit prescription form — accessible to those with patients access)
     Route::get('api/drugs', [DrugController::class, 'apiSearch'])->name('api.drugs');
 
-    // Drug Types
-    Route::resource('drug-types', DrugTypeController::class)
-        ->except(['show', 'create', 'edit']);
+    // ── Patients ──────────────────────────────────────────────
+    Route::middleware('role.permission:patients')->group(function () {
+        Route::resource('patients', PatientController::class);
+        Route::post('patients/{patient}/case/open',    [PatientController::class, 'openCase'])->name('patients.case.open');
+        Route::get('patients/{patient}/case',          [PatientController::class, 'showCase'])->name('patients.case.show');
+        Route::post('patients/{patient}/case/discard', [PatientController::class, 'discardCase'])->name('patients.case.discard');
+        Route::resource('patients.visits', VisitController::class)->except(['index']);
+        Route::post('patients/{patient}/visits/{visit}/discharge', [VisitController::class, 'discharge'])->name('patients.visits.discharge');
+    });
+
+    // ── Drugstore ─────────────────────────────────────────────
+    Route::middleware('role.permission:drugstore')->group(function () {
+        Route::resource('drugstore', DrugController::class)
+            ->parameters(['drugstore' => 'drug'])
+            ->except(['show']);
+        Route::resource('drug-types', DrugTypeController::class)
+            ->except(['show', 'create', 'edit']);
+    });
+
+    // ── Settings ──────────────────────────────────────────────
+    Route::middleware('role.permission:settings')->prefix('settings')->name('settings.')->group(function () {
+
+        Route::get('/', fn () => redirect()->route('settings.users.index'))->name('index');
+
+        // Role Permissions
+        Route::get('role-permissions',  [RolePermissionController::class, 'index'])->name('role-permissions.index');
+        Route::put('role-permissions',  [RolePermissionController::class, 'update'])->name('role-permissions.update');
+
+        // Payment Types
+        Route::get('payment-types',                      [PaymentTypeController::class, 'index'])->name('payment-types.index');
+        Route::post('payment-types',                     [PaymentTypeController::class, 'store'])->name('payment-types.store');
+        Route::put('payment-types/{paymentType}',        [PaymentTypeController::class, 'update'])->name('payment-types.update');
+        Route::delete('payment-types/{paymentType}',     [PaymentTypeController::class, 'destroy'])->name('payment-types.destroy');
+
+        // Service Groups
+        Route::get('service-groups',                     [ServiceGroupController::class, 'index'])->name('service-groups.index');
+        Route::post('service-groups',                    [ServiceGroupController::class, 'store'])->name('service-groups.store');
+        Route::put('service-groups/{serviceGroup}',      [ServiceGroupController::class, 'update'])->name('service-groups.update');
+        Route::delete('service-groups/{serviceGroup}',   [ServiceGroupController::class, 'destroy'])->name('service-groups.destroy');
+
+        // Services within a group
+        Route::get('service-groups/{serviceGroup}/services',                          [ServiceController::class, 'index'])->name('service-groups.services.index');
+        Route::post('service-groups/{serviceGroup}/services',                         [ServiceController::class, 'store'])->name('service-groups.services.store');
+        Route::put('service-groups/{serviceGroup}/services/{service}',                [ServiceController::class, 'update'])->name('service-groups.services.update');
+        Route::delete('service-groups/{serviceGroup}/services/{service}',             [ServiceController::class, 'destroy'])->name('service-groups.services.destroy');
+
+        // Users
+        Route::get('users',               [SettingUserController::class, 'index'])->name('users.index');
+        Route::get('users/create',        [SettingUserController::class, 'create'])->name('users.create');
+        Route::post('users',              [SettingUserController::class, 'store'])->name('users.store');
+        Route::get('users/{user}/edit',   [SettingUserController::class, 'edit'])->name('users.edit');
+        Route::put('users/{user}',        [SettingUserController::class, 'update'])->name('users.update');
+        Route::delete('users/{user}',     [SettingUserController::class, 'destroy'])->name('users.destroy');
+    });
 });

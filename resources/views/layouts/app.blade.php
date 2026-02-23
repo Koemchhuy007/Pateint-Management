@@ -308,29 +308,44 @@
 
 {{-- ══════════════ SUB NAVIGATION ══════════════ --}}
 <nav class="subnav">
+    @auth
+    @if(auth()->user()->canAccess('patients'))
     <a href="{{ route('patients.index') }}"
        class="subnav-item {{ request()->routeIs('patients.*') ? 'active' : '' }}">
         <i class="bi bi-people-fill"></i> Patients
     </a>
+    @endif
+
+    @if(auth()->user()->canAccess('invoice'))
     <a href="#"
        class="subnav-item {{ request()->routeIs('invoices.*') ? 'active' : '' }}">
         <i class="bi bi-receipt-cutoff"></i> Invoice
         <span class="badge-soon">Soon</span>
     </a>
+    @endif
+
+    @if(auth()->user()->canAccess('drugstore'))
     <a href="{{ route('drugstore.index') }}"
        class="subnav-item {{ request()->routeIs('drugstore.*') || request()->routeIs('drug-types.*') ? 'active' : '' }}">
         <i class="bi bi-capsule-pill"></i> Drugstore
     </a>
+    @endif
+
+    @if(auth()->user()->canAccess('reports'))
     <a href="#"
        class="subnav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
         <i class="bi bi-bar-chart-line-fill"></i> Report
         <span class="badge-soon">Soon</span>
     </a>
-    <a href="#"
+    @endif
+
+    @if(auth()->user()->canAccess('settings'))
+    <a href="{{ route('settings.index') }}"
        class="subnav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
         <i class="bi bi-gear-fill"></i> Setting
-        <span class="badge-soon">Soon</span>
     </a>
+    @endif
+    @endauth
 </nav>
 
 {{-- ══════════════ BREADCRUMB ══════════════ --}}
