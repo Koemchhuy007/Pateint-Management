@@ -12,13 +12,6 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name'     => 'System Administrator',
-                'username' => 'admin',
-                'email'    => 'admin@clinic.local',
-                'password' => Hash::make('password'),
-                'role'     => 'system_admin',
-            ],
-            [
                 'name'     => 'Dr. Sophea Chan',
                 'username' => 'dr_sophea',
                 'email'    => 'sophea@clinic.local',

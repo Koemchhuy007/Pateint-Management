@@ -317,10 +317,9 @@
     @endif
 
     @if(auth()->user()->canAccess('invoice'))
-    <a href="#"
+    <a href="{{ route('invoices.index') }}"
        class="subnav-item {{ request()->routeIs('invoices.*') ? 'active' : '' }}">
         <i class="bi bi-receipt-cutoff"></i> Invoice
-        <span class="badge-soon">Soon</span>
     </a>
     @endif
 

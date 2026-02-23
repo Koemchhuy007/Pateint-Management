@@ -7,6 +7,6 @@
 </head>
 <body>
     <p>Redirecting to patient management...</p>
-    <script>window.location.href = '{{ route('patients.index') }}';</script>
+    <script>window.location.href = '{{ route('patients.index')}}';</script>
 </body>
 </html>

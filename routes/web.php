@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DrugController;
 use App\Http\Controllers\DrugTypeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\Settings\PaymentTypeController;
@@ -40,6 +41,14 @@ Route::middleware('auth')->group(function () {
         Route::post('patients/{patient}/case/discard', [PatientController::class, 'discardCase'])->name('patients.case.discard');
         Route::resource('patients.visits', VisitController::class)->except(['index']);
         Route::post('patients/{patient}/visits/{visit}/discharge', [VisitController::class, 'discharge'])->name('patients.visits.discharge');
+    });
+
+    // ── Invoice ───────────────────────────────────────────────
+    Route::middleware('role.permission:invoice')->group(function () {
+        Route::get('invoices',              [InvoiceController::class, 'index'])->name('invoices.index');
+        Route::get('invoices/{patient}',    [InvoiceController::class, 'show'])->name('invoices.show');
+        Route::post('invoices/{patient}',   [InvoiceController::class, 'store'])->name('invoices.store');
+        Route::delete('invoices/{invoice}', [InvoiceController::class, 'destroy'])->name('invoices.destroy');
     });
 
     // ── Drugstore ─────────────────────────────────────────────

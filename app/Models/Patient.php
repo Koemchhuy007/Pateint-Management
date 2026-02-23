@@ -65,6 +65,11 @@ class Patient extends Model
         return $this->hasMany(PatientVisit::class)->latest('visit_date');
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     public function getPhotoUrlAttribute(): ?string
     {
         return $this->photo
