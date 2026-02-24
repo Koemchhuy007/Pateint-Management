@@ -331,10 +331,9 @@
     @endif
 
     @if(auth()->user()->canAccess('reports'))
-    <a href="#"
+    <a href="{{ route('reports.index') }}"
        class="subnav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
         <i class="bi bi-bar-chart-line-fill"></i> Report
-        <span class="badge-soon">Soon</span>
     </a>
     @endif
 

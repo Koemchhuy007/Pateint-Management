@@ -10,6 +10,7 @@ use App\Http\Controllers\Settings\PaymentTypeController;
 use App\Http\Controllers\Settings\RolePermissionController;
 use App\Http\Controllers\Settings\ServiceGroupController;
 use App\Http\Controllers\Settings\ServiceController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Settings\UserController as SettingUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +59,15 @@ Route::middleware('auth')->group(function () {
             ->except(['show']);
         Route::resource('drug-types', DrugTypeController::class)
             ->except(['show', 'create', 'edit']);
+    });
+
+    // ── Reports ───────────────────────────────────────────────
+    Route::middleware('role.permission:reports')->prefix('reports')->name('reports.')->group(function () {
+        Route::get('/',               [ReportController::class, 'index'])->name('index');
+        Route::get('patient-visits',  [ReportController::class, 'patientVisits'])->name('patient-visits');
+        Route::get('drug-usage',      [ReportController::class, 'drugUsage'])->name('drug-usage');
+        Route::get('drug-store',      [ReportController::class, 'drugStore'])->name('drug-store');
+        Route::get('financial',       [ReportController::class, 'financial'])->name('financial');
     });
 
     // ── Settings ──────────────────────────────────────────────
