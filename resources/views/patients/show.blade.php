@@ -79,7 +79,7 @@
                                 <th>Doctor</th>
                                 <th>Reason / Diagnosis / Treatment</th>
                                 <th>Follow-up</th>
-                                <th style="width:130px">Actions</th>
+                                <th style="width:44px" class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -151,35 +151,68 @@
                                     @endif
                                 </td>
 
-                                <td>
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('patients.visits.show', [$patient, $visit]) }}"
-                                            class="btn btn-outline-secondary" title="View">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="{{ route('patients.visits.edit', [$patient, $visit]) }}"
-                                            class="btn btn-outline-primary" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        @if(!$visit->discharge_date)
-                                        <form action="{{ route('patients.visits.discharge', [$patient, $visit]) }}"
-                                            method="POST" class="d-inline"
-                                            onsubmit="return confirm('Mark this visit as discharged today?');">
-                                            @csrf
-                                            <button type="submit" class="btn btn-outline-warning" title="Discharge">
-                                                <i class="bi bi-box-arrow-right"></i>
-                                            </button>
-                                        </form>
-                                        @endif
-                                        <form action="{{ route('patients.visits.destroy', [$patient, $visit]) }}"
-                                            method="POST" class="d-inline"
-                                            onsubmit="return confirm('Delete this visit record?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger" title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                {{-- ── Action Dropdown ── --}}
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary border-0 rounded-2"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                                title="Actions">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow border-0"
+                                            style="min-width:165px;font-size:.85rem;border-radius:10px;">
+
+                                            <li>
+                                                <a class="dropdown-item py-2"
+                                                   href="{{ route('patients.visits.show', [$patient, $visit]) }}">
+                                                    <i class="bi bi-eye me-2" style="color:#64748b;"></i>View Detail
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item py-2"
+                                                   href="{{ route('patients.visits.show', [$patient, $visit]) }}?print=1"
+                                                   target="_blank">
+                                                    <i class="bi bi-printer me-2" style="color:#0369a1;"></i>Print Visit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item py-2"
+                                                   href="{{ route('patients.visits.edit', [$patient, $visit]) }}">
+                                                    <i class="bi bi-pencil me-2" style="color:#2563eb;"></i>Edit
+                                                </a>
+                                            </li>
+
+                                            @if($isActive)
+                                            <li><hr class="dropdown-divider my-1"></li>
+                                            <li>
+                                                <form action="{{ route('patients.visits.discharge', [$patient, $visit]) }}"
+                                                      method="POST"
+                                                      onsubmit="return confirm('Mark this visit as discharged today?');">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="dropdown-item py-2 fw-semibold"
+                                                            style="color:#d97706;">
+                                                        <i class="bi bi-box-arrow-right me-2"></i>Discharge
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            @endif
+
+                                            <li><hr class="dropdown-divider my-1"></li>
+                                            <li>
+                                                <form action="{{ route('patients.visits.destroy', [$patient, $visit]) }}"
+                                                      method="POST"
+                                                      onsubmit="return confirm('Delete this visit record?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item py-2 text-danger">
+                                                        <i class="bi bi-trash me-2"></i>Delete
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>

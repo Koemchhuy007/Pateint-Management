@@ -19,8 +19,8 @@ class LoginController extends Controller
             'username' => ['required', 'string'],
             'password' => ['required'],
         ], [
-            'username.required' => 'ឈ្មោះអ្នកប្រើប្រាស់ត្រូវតែបំពេញ។',
-            'password.required' => 'ពាក្យសម្ងាត់ត្រូវតែបំពេញ។',
+            'username.required' => 'Username is incorrect.',
+            'password.required' => 'password is incorrect.',
         ]);
 
         $loginField = filter_var($credentials['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
@@ -32,7 +32,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'username' => 'ឈ្មោះអ្នកប្រើប្រាស់ ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ។',
+            'username' => 'The username or password is incorrect.',
         ])->onlyInput('username');
     }
 

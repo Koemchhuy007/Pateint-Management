@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
             PaymentTypeSeeder::class,
             ServiceGroupSeeder::class,
             RolePermissionSeeder::class,
+            // Report feature seeders (depend on the above)
+            PatientVisitSeeder::class,
+            InvoiceSeeder::class,
         ]);
     }
 }
