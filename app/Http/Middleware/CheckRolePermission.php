@@ -26,7 +26,7 @@ class CheckRolePermission
                 return response()->json(['message' => 'Access denied.'], 403);
             }
 
-            return redirect()->route('patients.index')
+            return redirect()->route($user->homeRoute())
                 ->with('error', 'You do not have permission to access that feature.');
         }
 

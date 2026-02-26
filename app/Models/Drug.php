@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasTenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Drug extends Model
 {
+    use HasTenant;
+
     protected $fillable = [
         'drug_type_id',
         'name',

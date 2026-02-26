@@ -37,7 +37,7 @@
                         <div class="col-sm-6">
                             <label class="form-label fw-semibold">Role <span class="text-danger">*</span></label>
                             <select name="role" class="form-select @error('role') is-invalid @enderror" required>
-                                @foreach(\App\Models\User::ROLES as $value => $label)
+                                @foreach($availableRoles as $value => $label)
                                     <option value="{{ $value }}" {{ old('role', $user->role) === $value ? 'selected' : '' }}>
                                         {{ $label }}
                                     </option>

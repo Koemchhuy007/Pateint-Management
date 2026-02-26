@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasTenant;
 use Illuminate\Database\Eloquent\Model;
 
 class RolePermission extends Model
 {
+    use HasTenant;
+
     protected $fillable = ['role', 'feature'];
 
     /** All configurable nav features */

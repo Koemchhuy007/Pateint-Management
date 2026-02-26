@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'role.permission' => \App\Http\Middleware\CheckRolePermission::class,
+            'role.permission'        => \App\Http\Middleware\CheckRolePermission::class,
+            'super.admin'            => \App\Http\Middleware\EnsureSuperAdmin::class,
+            'system_or_super.admin'  => \App\Http\Middleware\EnsureSystemOrSuperAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

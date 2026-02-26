@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\SystemAdminController;
+use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DrugController;
 use App\Http\Controllers\DrugTypeController;
@@ -15,7 +20,11 @@ use App\Http\Controllers\Settings\UserController as SettingUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return auth()->check() ? redirect()->route('patients.index') : redirect()->route('login');
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
+
+    return redirect()->route(auth()->user()->homeRoute());
 });
 
 Route::middleware('guest')->group(function () {
@@ -105,4 +114,37 @@ Route::middleware('auth')->group(function () {
         Route::put('users/{user}',        [SettingUserController::class, 'update'])->name('users.update');
         Route::delete('users/{user}',     [SettingUserController::class, 'destroy'])->name('users.destroy');
     });
+
+    // ── Analytics (system_admin + super_admin) ────────────────
+    Route::middleware('system_or_super.admin')->group(function () {
+        Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
+    });
+
+    // ── Super Admin ───────────────────────────────────────────
+    Route::middleware('super.admin')->prefix('admin')->name('admin.')->group(function () {
+
+        Route::get('/', [AdminController::class, 'index'])->name('index');
+
+        // Clients (tenants)
+        Route::get('clients',                    [ClientController::class, 'index'])->name('clients.index');
+        Route::get('clients/create',             [ClientController::class, 'create'])->name('clients.create');
+        Route::post('clients',                   [ClientController::class, 'store'])->name('clients.store');
+        Route::get('clients/{client}/edit',      [ClientController::class, 'edit'])->name('clients.edit');
+        Route::put('clients/{client}',           [ClientController::class, 'update'])->name('clients.update');
+        Route::delete('clients/{client}',        [ClientController::class, 'destroy'])->name('clients.destroy');
+
+        // System admins (created only by super_admin)
+        Route::get('system-admins',              [SystemAdminController::class, 'index'])->name('system-admins.index');
+        Route::get('system-admins/create',       [SystemAdminController::class, 'create'])->name('system-admins.create');
+        Route::post('system-admins',             [SystemAdminController::class, 'store'])->name('system-admins.store');
+        Route::delete('system-admins/{user}',    [SystemAdminController::class, 'destroy'])->name('system-admins.destroy');
+
+        // Users (all tenants)
+        Route::get('users',                      [AdminUserController::class, 'index'])->name('users.index');
+        Route::post('users/{user}/impersonate',  [AdminUserController::class, 'impersonate'])->name('users.impersonate');
+    });
+
+    // Stop impersonation (accessible without super.admin middleware, uses original id from session)
+    Route::post('admin/stop-impersonate', [AdminUserController::class, 'stopImpersonate'])
+        ->name('admin.stop-impersonate');
 });

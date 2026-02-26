@@ -268,7 +268,7 @@
 
 {{-- ══════════════ PRIMARY TOP BAR ══════════════ --}}
 <header class="topbar">
-    <a class="topbar-brand" href="{{ route('patients.index') }}">
+    <a class="topbar-brand" href="{{ route(auth()->user()->homeRoute()) }}">
         <i class="bi bi-heart-pulse"></i>
         <span>{{ config('app.name') }}</span>
     </a>
@@ -309,42 +309,82 @@
 {{-- ══════════════ SUB NAVIGATION ══════════════ --}}
 <nav class="subnav">
     @auth
-    @if(auth()->user()->canAccess('patients'))
-    <a href="{{ route('patients.index') }}"
-       class="subnav-item {{ request()->routeIs('patients.*') ? 'active' : '' }}">
-        <i class="bi bi-people-fill"></i> Patients
+    @php $u = auth()->user(); @endphp
+
+    {{-- ── Client users + system_admin: Patients · Invoice · Drugstore · Report · Setting ── --}}
+    @if($u->isClientUser() || $u->isSystemAdmin())
+        @if($u->canAccess('patients'))
+        <a href="{{ route('patients.index') }}"
+           class="subnav-item {{ request()->routeIs('patients.*') ? 'active' : '' }}">
+            <i class="bi bi-people-fill"></i> Patients
+        </a>
+        @endif
+
+        @if($u->canAccess('invoice'))
+        <a href="{{ route('invoices.index') }}"
+           class="subnav-item {{ request()->routeIs('invoices.*') ? 'active' : '' }}">
+            <i class="bi bi-receipt-cutoff"></i> Invoice
+        </a>
+        @endif
+
+        @if($u->canAccess('drugstore'))
+        <a href="{{ route('drugstore.index') }}"
+           class="subnav-item {{ request()->routeIs('drugstore.*') || request()->routeIs('drug-types.*') ? 'active' : '' }}">
+            <i class="bi bi-capsule-pill"></i> Drugstore
+        </a>
+        @endif
+
+        @if($u->canAccess('reports'))
+        <a href="{{ route('reports.index') }}"
+           class="subnav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+            <i class="bi bi-bar-chart-line-fill"></i> Report
+        </a>
+        @endif
+
+        @if($u->canAccess('settings'))
+        <a href="{{ route('settings.index') }}"
+           class="subnav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+            <i class="bi bi-gear-fill"></i> Setting
+        </a>
+        @endif
+    @endif
+
+    {{-- ── system_admin + super_admin: Analytics ── --}}
+    @if($u->hasAnalyticsAccess())
+    @php $analyticsActive = request()->routeIs('analytics.*'); @endphp
+    <a href="{{ route('analytics.index') }}"
+       class="subnav-item {{ $analyticsActive ? 'active' : '' }}"
+       style="color:#0891b2;{{ $analyticsActive ? 'border-bottom-color:#0891b2;' : '' }}">
+        <i class="bi bi-graph-up-arrow"></i> Analytics
     </a>
     @endif
 
-    @if(auth()->user()->canAccess('invoice'))
-    <a href="{{ route('invoices.index') }}"
-       class="subnav-item {{ request()->routeIs('invoices.*') ? 'active' : '' }}">
-        <i class="bi bi-receipt-cutoff"></i> Invoice
+    {{-- ── super_admin only: Super User management ── --}}
+    @if($u->isSuper())
+    <a href="{{ route('admin.index') }}"
+       class="subnav-item {{ request()->routeIs('admin.*') ? 'active' : '' }}"
+       style="color:#f59e0b;{{ request()->routeIs('admin.*') ? 'border-bottom-color:#f59e0b;' : '' }}">
+        <i class="bi bi-shield-lock-fill"></i> Super Admin
     </a>
     @endif
 
-    @if(auth()->user()->canAccess('drugstore'))
-    <a href="{{ route('drugstore.index') }}"
-       class="subnav-item {{ request()->routeIs('drugstore.*') || request()->routeIs('drug-types.*') ? 'active' : '' }}">
-        <i class="bi bi-capsule-pill"></i> Drugstore
-    </a>
-    @endif
-
-    @if(auth()->user()->canAccess('reports'))
-    <a href="{{ route('reports.index') }}"
-       class="subnav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-        <i class="bi bi-bar-chart-line-fill"></i> Report
-    </a>
-    @endif
-
-    @if(auth()->user()->canAccess('settings'))
-    <a href="{{ route('settings.index') }}"
-       class="subnav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-        <i class="bi bi-gear-fill"></i> Setting
-    </a>
-    @endif
     @endauth
 </nav>
+
+{{-- ══════════════ IMPERSONATION BANNER ══════════════ --}}
+@if(session('impersonate_original_id'))
+<div style="background:#7c3aed;color:#fff;padding:6px 24px;font-size:.82rem;display:flex;align-items:center;gap:12px;">
+    <i class="bi bi-person-badge-fill"></i>
+    <span>You are impersonating <strong>{{ auth()->user()->name }}</strong>.</span>
+    <form action="{{ route('admin.stop-impersonate') }}" method="POST" style="margin:0;">
+        @csrf
+        <button type="submit"
+                style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:5px;padding:2px 10px;font-size:.8rem;cursor:pointer;">
+            Stop Impersonating
+        </button>
+    </form>
+</div>
+@endif
 
 {{-- ══════════════ BREADCRUMB ══════════════ --}}
 @hasSection('breadcrumb')
