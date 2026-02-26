@@ -62,6 +62,36 @@
         /* Spacer */
         .topbar-spacer { flex: 1; }
 
+        /* ── Language Switcher ── */
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 8px;
+            padding: 3px 4px;
+            flex-shrink: 0;
+        }
+        .lang-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: .78rem;
+            font-weight: 600;
+            color: rgba(255,255,255,.6);
+            text-decoration: none;
+            transition: all .15s;
+            white-space: nowrap;
+        }
+        .lang-btn:hover { color: #fff; background: rgba(255,255,255,.12); }
+        .lang-btn.active {
+            background: rgba(255,255,255,.18);
+            color: #fff;
+        }
+
         /* User button */
         .topbar-user-btn {
             display: flex;
@@ -260,6 +290,7 @@
             .topbar { padding: 0 16px; }
             .page-content { padding: 16px; }
             .topbar-brand span { display: none; }
+            .lang-btn span { display: none; }
         }
     </style>
     @stack('styles')
@@ -274,6 +305,19 @@
     </a>
 
     <div class="topbar-spacer"></div>
+
+    {{-- ── Language Switcher ── --}}
+    @php $currentLocale = app()->getLocale(); @endphp
+    <div class="lang-switcher" title="{{ __('lang.switch') ?? 'Switch Language' }}">
+        <a href="{{ route('locale.switch', 'km') }}"
+           class="lang-btn {{ $currentLocale === 'km' ? 'active' : '' }}">
+            🇰🇭 <span>ខ្មែរ</span>
+        </a>
+        <a href="{{ route('locale.switch', 'en') }}"
+           class="lang-btn {{ $currentLocale === 'en' ? 'active' : '' }}">
+            🇬🇧 <span>EN</span>
+        </a>
+    </div>
 
     {{-- User dropdown button --}}
     <button class="topbar-user-btn" onclick="toggleUserMenu()" id="userMenuBtn" type="button">
@@ -301,7 +345,7 @@
     <form action="{{ route('logout') }}" method="POST">
         @csrf
         <button type="submit" class="dropdown-logout">
-            <i class="bi bi-box-arrow-right"></i> Logout
+            <i class="bi bi-box-arrow-right"></i> {{ __('auth.logout') }}
         </button>
     </form>
 </div>
@@ -316,35 +360,35 @@
         @if($u->canAccess('patients'))
         <a href="{{ route('patients.index') }}"
            class="subnav-item {{ request()->routeIs('patients.*') ? 'active' : '' }}">
-            <i class="bi bi-people-fill"></i> Patients
+            <i class="bi bi-people-fill"></i> {{ __('nav.patients') }}
         </a>
         @endif
 
         @if($u->canAccess('invoice'))
         <a href="{{ route('invoices.index') }}"
            class="subnav-item {{ request()->routeIs('invoices.*') ? 'active' : '' }}">
-            <i class="bi bi-receipt-cutoff"></i> Invoice
+            <i class="bi bi-receipt-cutoff"></i> {{ __('nav.invoice') }}
         </a>
         @endif
 
         @if($u->canAccess('drugstore'))
         <a href="{{ route('drugstore.index') }}"
            class="subnav-item {{ request()->routeIs('drugstore.*') || request()->routeIs('drug-types.*') ? 'active' : '' }}">
-            <i class="bi bi-capsule-pill"></i> Drugstore
+            <i class="bi bi-capsule-pill"></i> {{ __('nav.drugstore') }}
         </a>
         @endif
 
         @if($u->canAccess('reports'))
         <a href="{{ route('reports.index') }}"
            class="subnav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
-            <i class="bi bi-bar-chart-line-fill"></i> Report
+            <i class="bi bi-bar-chart-line-fill"></i> {{ __('nav.report') }}
         </a>
         @endif
 
         @if($u->canAccess('settings'))
         <a href="{{ route('settings.index') }}"
            class="subnav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-            <i class="bi bi-gear-fill"></i> Setting
+            <i class="bi bi-gear-fill"></i> {{ __('nav.setting') }}
         </a>
         @endif
     @endif
@@ -355,16 +399,28 @@
     <a href="{{ route('analytics.index') }}"
        class="subnav-item {{ $analyticsActive ? 'active' : '' }}"
        style="color:#0891b2;{{ $analyticsActive ? 'border-bottom-color:#0891b2;' : '' }}">
-        <i class="bi bi-graph-up-arrow"></i> Analytics
+        <i class="bi bi-graph-up-arrow"></i> {{ __('nav.analytics') }}
     </a>
     @endif
 
-    {{-- ── super_admin only: Super User management ── --}}
+    {{-- ── super_admin only: Super User management + Setting ── --}}
     @if($u->isSuper())
+    @php
+        $adminActive   = request()->routeIs('admin.index')
+                      || request()->routeIs('admin.clients.*')
+                      || request()->routeIs('admin.system-admins.*')
+                      || request()->routeIs('admin.users.*');
+        $adminSettingActive = request()->routeIs('admin.settings.*');
+    @endphp
     <a href="{{ route('admin.index') }}"
-       class="subnav-item {{ request()->routeIs('admin.*') ? 'active' : '' }}"
-       style="color:#f59e0b;{{ request()->routeIs('admin.*') ? 'border-bottom-color:#f59e0b;' : '' }}">
-        <i class="bi bi-shield-lock-fill"></i> Super Admin
+       class="subnav-item {{ $adminActive ? 'active' : '' }}"
+       style="color:#f59e0b;{{ $adminActive ? 'border-bottom-color:#f59e0b;' : '' }}">
+        <i class="bi bi-shield-lock-fill"></i> {{ __('nav.super_admin') }}
+    </a>
+    <a href="{{ route('admin.settings.index') }}"
+       class="subnav-item {{ $adminSettingActive ? 'active' : '' }}"
+       style="color:#f59e0b;{{ $adminSettingActive ? 'border-bottom-color:#f59e0b;' : '' }}">
+        <i class="bi bi-gear-wide-connected"></i> Setting
     </a>
     @endif
 

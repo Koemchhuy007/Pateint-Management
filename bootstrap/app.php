@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Apply locale detection to every web request (defaults to Khmer)
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
+
         $middleware->alias([
             'role.permission'        => \App\Http\Middleware\CheckRolePermission::class,
             'super.admin'            => \App\Http\Middleware\EnsureSuperAdmin::class,

@@ -53,22 +53,23 @@
 
         <a href="{{ route('settings.users.index') }}"
            class="settings-nav-item {{ request()->routeIs('settings.users.*') ? 'active' : '' }}">
-            <i class="bi bi-people-fill"></i> Users
+            <i class="bi bi-people-fill"></i> {{ __('settings.sidebar.users') }}
         </a>
 
         <a href="{{ route('settings.role-permissions.index') }}"
            class="settings-nav-item {{ request()->routeIs('settings.role-permissions.*') ? 'active' : '' }}">
-            <i class="bi bi-shield-lock-fill"></i> Role Permissions
+            <i class="bi bi-shield-lock-fill"></i> {{ __('settings.sidebar.role_permissions') }}
         </a>
 
         <a href="{{ route('settings.payment-types.index') }}"
            class="settings-nav-item {{ request()->routeIs('settings.payment-types.*') ? 'active' : '' }}">
-            <i class="bi bi-credit-card-fill"></i> Payment Types
+            <i class="bi bi-credit-card-fill"></i> {{ __('settings.sidebar.payment_types') }}
         </a>
 
         <a href="{{ route('settings.service-groups.index') }}"
            class="settings-nav-item {{ request()->routeIs('settings.service-groups.*') ? 'active' : '' }}">
-            <i class="bi bi-grid-fill"></i> Service Groups
+            <i class="bi bi-grid-fill"></i> {{ __('settings.sidebar.service_groups') }}
         </a>
+
     </nav>
 </div>

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminSettingController;
+use App\Http\Controllers\Admin\AdminTranslationController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\SystemAdminController;
@@ -15,6 +17,7 @@ use App\Http\Controllers\Settings\PaymentTypeController;
 use App\Http\Controllers\Settings\RolePermissionController;
 use App\Http\Controllers\Settings\ServiceGroupController;
 use App\Http\Controllers\Settings\ServiceController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Settings\UserController as SettingUserController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +29,9 @@ Route::get('/', function () {
 
     return redirect()->route(auth()->user()->homeRoute());
 });
+
+// ── Language switch (no auth required — works on login page too) ──
+Route::get('locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -79,7 +85,7 @@ Route::middleware('auth')->group(function () {
         Route::get('financial',       [ReportController::class, 'financial'])->name('financial');
     });
 
-    // ── Settings ──────────────────────────────────────────────
+    // ── Settings (system_admin + client_users) ─────────────────
     Route::middleware('role.permission:settings')->prefix('settings')->name('settings.')->group(function () {
 
         Route::get('/', fn () => redirect()->route('settings.users.index'))->name('index');
@@ -142,6 +148,14 @@ Route::middleware('auth')->group(function () {
         // Users (all tenants)
         Route::get('users',                      [AdminUserController::class, 'index'])->name('users.index');
         Route::post('users/{user}/impersonate',  [AdminUserController::class, 'impersonate'])->name('users.impersonate');
+
+        // Admin Settings (super_admin only)
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/',         [AdminSettingController::class,     'index'])->name('index');
+            Route::put('/',         [AdminSettingController::class,     'update'])->name('update');
+            Route::get('translations',  [AdminTranslationController::class, 'index'])->name('translations.index');
+            Route::put('translations',  [AdminTranslationController::class, 'update'])->name('translations.update');
+        });
     });
 
     // Stop impersonation (accessible without super.admin middleware, uses original id from session)
