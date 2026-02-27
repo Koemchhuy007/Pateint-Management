@@ -9,9 +9,9 @@
 @section('content')
 <div class="mb-4">
     <h5 class="fw-bold mb-1" style="color:#1e293b;">
-        <i class="bi bi-bar-chart-line-fill me-2" style="color:#2563eb;"></i>Reports
+        <i class="bi bi-bar-chart-line-fill me-2" style="color:#2563eb;"></i>{{ __('report.title') }}
     </h5>
-    <div class="text-muted" style="font-size:.88rem;">Select a report type to set a date range and generate data.</div>
+    <div class="text-muted" style="font-size:.88rem;">{{ __('report.intro') }}</div>
 </div>
 
 <div class="row g-3">
@@ -24,9 +24,9 @@
                 <div class="report-icon mb-3" style="background:#eff6ff;">
                     <i class="bi bi-person-lines-fill" style="color:#2563eb;"></i>
                 </div>
-                <div class="fw-bold mb-1" style="color:#1e293b;">Patient Visit Report</div>
+                <div class="fw-bold mb-1" style="color:#1e293b;">{{ __('report.patient_visits') }}</div>
                 <div class="text-muted" style="font-size:.82rem; line-height:1.5;">
-                    View all patient visits within a date range. Filter by OPD / IPD type and discharge status.
+                    {{ __('report.patient_visits_desc') }}
                 </div>
             </div>
             <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
@@ -45,9 +45,9 @@
                 <div class="report-icon mb-3" style="background:#f0fdf4;">
                     <i class="bi bi-capsule-pill" style="color:#16a34a;"></i>
                 </div>
-                <div class="fw-bold mb-1" style="color:#1e293b;">Drug Usage Report</div>
+                <div class="fw-bold mb-1" style="color:#1e293b;">{{ __('report.drug_usage') }}</div>
                 <div class="text-muted" style="font-size:.82rem; line-height:1.5;">
-                    Summarise drugs dispensed via prescriptions within a selected date range.
+                    {{ __('report.drug_usage_desc') }}
                 </div>
             </div>
             <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
@@ -66,9 +66,9 @@
                     <div class="report-icon mb-3" style="background:#fffbeb;">
                         <i class="bi bi-box-seam-fill" style="color:#d97706;"></i>
                     </div>
-                    <div class="fw-bold mb-1" style="color:#1e293b;">Drug Store Report</div>
+                    <div class="fw-bold mb-1" style="color:#1e293b;">{{ __('report.drug_store') }}</div>
                     <div class="text-muted" style="font-size:.82rem; line-height:1.5;">
-                        View current drug inventory levels. Highlights low stock and out-of-stock items.
+                        {{ __('report.drug_store_desc') }}
                     </div>
                 </div>
                 <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
@@ -88,9 +88,9 @@
                 <div class="report-icon mb-3" style="background:#f5f3ff;">
                     <i class="bi bi-cash-stack" style="color:#7c3aed;"></i>
                 </div>
-                <div class="fw-bold mb-1" style="color:#1e293b;">Financial Statement</div>
+                <div class="fw-bold mb-1" style="color:#1e293b;">{{ __('report.financial') }}</div>
                 <div class="text-muted" style="font-size:.82rem; line-height:1.5;">
-                    Review invoice totals, discounts, amounts received, and breakdowns by payment type.
+                    {{ __('report.financial_desc') }}
                 </div>
             </div>
             <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
@@ -133,7 +133,7 @@
                         {{-- Start Date --}}
                         <div class="col-6">
                             <label class="form-label fw-semibold" style="font-size:.83rem;">
-                                Start Date <span class="text-danger">*</span>
+                                {{ __('field.start_date') }} <span class="text-danger">*</span>
                             </label>
                             <div class="input-group input-group-sm">
                                 <input type="text"
@@ -156,7 +156,7 @@
                         {{-- End Date --}}
                         <div class="col-6">
                             <label class="form-label fw-semibold" style="font-size:.83rem;">
-                                End Date <span class="text-danger">*</span>
+                                {{ __('field.end_date') }} <span class="text-danger">*</span>
                             </label>
                             <div class="input-group input-group-sm">
                                 <input type="text"
@@ -187,11 +187,11 @@
 
                 <div class="modal-footer border-0 pt-0 px-4 pb-4 gap-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary px-3" data-bs-dismiss="modal">
-                        Cancel
+                        {{ __('common.cancel') }}
                     </button>
                     <button type="button" class="btn btn-sm px-4" id="modalGenerateBtn"
                             onclick="submitDateModal()" style="color:#fff; min-width:130px;">
-                        <i class="bi bi-search me-1"></i>Generate Report
+                        <i class="bi bi-search me-1"></i>{{ __('report.generate') }}
                     </button>
                 </div>
             </form>

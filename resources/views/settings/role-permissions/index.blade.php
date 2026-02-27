@@ -88,11 +88,11 @@
         <div class="d-flex justify-content-between align-items-start mb-4">
             <div>
                 <h5 class="fw-bold mb-1" style="color:#1e293b;">
-                    <i class="bi bi-shield-lock-fill me-2 text-primary"></i>Role Permissions
+                    <i class="bi bi-shield-lock-fill me-2 text-primary"></i>{{ __('settings.role_permissions') }}
                 </h5>
                 <p class="text-muted mb-0" style="font-size:.83rem;">
-                    Control which menu features each role can access.
-                    System Admin always has full access.
+                    {{ __('settings.permission_note') }}
+                    {{ __('settings.full_access_note') }}
                 </p>
             </div>
         </div>
@@ -105,7 +105,7 @@
                     <table class="table perm-table align-middle mb-0" style="font-size:.88rem;">
                         <thead style="background:#f8fafc;">
                             <tr>
-                                <th class="ps-4" style="width:220px;">Menu Feature</th>
+                                <th class="ps-4" style="width:220px;">{{ __('settings.menu_feature') }}</th>
                                 @foreach($roles as $roleKey => $roleLabel)
                                 <th class="role-col text-center">
                                     <span class="role-header-badge badge-{{ $roleKey }}">
@@ -163,10 +163,10 @@
                 <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
                     <p class="text-muted mb-0" style="font-size:.78rem;">
                         <i class="bi bi-info-circle me-1"></i>
-                        Changes take effect immediately on next page load.
+                        {{ __('settings.changes_effect') }}
                     </p>
                     <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-check-lg me-1"></i>Save Permissions
+                        <i class="bi bi-check-lg me-1"></i>{{ __('settings.save_permissions') }}
                     </button>
                 </div>
             </div>

@@ -17,7 +17,7 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-pencil me-2 text-primary"></i>Edit User — {{ $user->name }}</span>
                 <a href="{{ route('settings.users.index') }}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left me-1"></i>Back
+                    <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
                 </a>
             </div>
             <div class="card-body p-4">
@@ -27,7 +27,7 @@
                     <div class="row g-3">
 
                         <div class="col-sm-6">
-                            <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">{{ __('field.name') }} <span class="text-danger">*</span></label>
                             <input type="text" name="name"
                                    class="form-control @error('name') is-invalid @enderror"
                                    value="{{ old('name', $user->name) }}" required>
@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label fw-semibold">Role <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">{{ __('field.role') }} <span class="text-danger">*</span></label>
                             <select name="role" class="form-select @error('role') is-invalid @enderror" required>
                                 @foreach($availableRoles as $value => $label)
                                     <option value="{{ $value }}" {{ old('role', $user->role) === $value ? 'selected' : '' }}>
@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label fw-semibold">Username <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">{{ __('field.username') }} <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0 text-muted">
                                     <i class="bi bi-at"></i>
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">{{ __('field.email') }} <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-end-0 text-muted">
                                     <i class="bi bi-envelope"></i>
@@ -76,12 +76,12 @@
                             <hr class="my-1">
                             <p class="text-muted mb-3" style="font-size:.82rem;">
                                 <i class="bi bi-lock me-1"></i>
-                                Leave password fields blank to keep the current password.
+                                {{ __('settings.password_hint') }}
                             </p>
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label fw-semibold">New Password</label>
+                            <label class="form-label fw-semibold">{{ __('settings.new_password') }}</label>
                             <input type="password" name="password"
                                    class="form-control @error('password') is-invalid @enderror"
                                    placeholder="Min. 8 characters">
@@ -89,16 +89,16 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label fw-semibold">Confirm New Password</label>
+                            <label class="form-label fw-semibold">{{ __('settings.confirm_new_password') }}</label>
                             <input type="password" name="password_confirmation"
                                    class="form-control" placeholder="Re-enter new password">
                         </div>
 
                         <div class="col-12 d-flex gap-2 mt-2">
                             <button type="submit" class="btn btn-primary px-4">
-                                <i class="bi bi-check-lg me-1"></i>Update User
+                                <i class="bi bi-check-lg me-1"></i>{{ __('settings.update_user') }}
                             </button>
-                            <a href="{{ route('settings.users.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                            <a href="{{ route('settings.users.index') }}" class="btn btn-outline-secondary">{{ __('common.cancel') }}</a>
                         </div>
 
                     </div>
@@ -111,14 +111,14 @@
         <div class="card mt-3" style="border-color:#fecaca !important;">
             <div class="card-body d-flex justify-content-between align-items-center py-3">
                 <div>
-                    <div class="fw-semibold text-danger" style="font-size:.88rem;">Delete this user</div>
-                    <div class="text-muted" style="font-size:.78rem;">This action cannot be undone.</div>
+                    <div class="fw-semibold text-danger" style="font-size:.88rem;">{{ __('settings.delete_user_title') }}</div>
+                    <div class="text-muted" style="font-size:.78rem;">{{ __('common.cannot_undo') }}</div>
                 </div>
                 <form action="{{ route('settings.users.destroy', $user) }}" method="POST"
                       onsubmit="return confirm('Delete {{ addslashes($user->name) }}?')">
                     @csrf @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger">
-                        <i class="bi bi-trash me-1"></i>Delete
+                        <i class="bi bi-trash me-1"></i>{{ __('common.delete') }}
                     </button>
                 </form>
             </div>

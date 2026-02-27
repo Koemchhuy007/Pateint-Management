@@ -27,7 +27,7 @@
 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
     <div>
         <h5 class="fw-bold mb-0" style="color:#1e293b;">
-            <i class="bi bi-capsule-pill me-2 text-success"></i>Drugstore
+            <i class="bi bi-capsule-pill me-2 text-success"></i>{{ __('drug.title') }}
         </h5>
         <div class="text-muted mt-1" style="font-size:.82rem;">
             {{ $drugs->total() }} drug{{ $drugs->total() != 1 ? 's' : '' }} in inventory
@@ -35,10 +35,10 @@
     </div>
     <div class="d-flex gap-2 flex-wrap">
         <a href="{{ route('drug-types.index') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-tags me-1"></i>Drug Types
+            <i class="bi bi-tags me-1"></i>{{ __('drug.types') }}
         </a>
         <a href="{{ route('drugstore.create') }}" class="btn btn-primary btn-sm">
-            <i class="bi bi-plus-lg me-1"></i>Add Drug
+            <i class="bi bi-plus-lg me-1"></i>{{ __('drug.create') }}
         </a>
     </div>
 </div>
@@ -53,13 +53,13 @@
                         <i class="bi bi-search text-muted"></i>
                     </span>
                     <input type="text" name="search" class="form-control border-start-0"
-                           placeholder="Search drug name…"
+                           placeholder="{{ __('placeholder.drug_search') }}"
                            value="{{ request('search') }}">
                 </div>
             </div>
             <div class="col-sm-4">
                 <select name="type_id" class="form-select form-select-sm">
-                    <option value="">— All Types —</option>
+                    <option value="">{{ __('common.all') }}</option>
                     @foreach($drugTypes as $type)
                         <option value="{{ $type->id }}" {{ request('type_id') == $type->id ? 'selected' : '' }}>
                             {{ $type->name }}
@@ -69,7 +69,7 @@
             </div>
             <div class="col-sm-3 d-flex gap-2">
                 <button type="submit" class="btn btn-primary btn-sm flex-fill">
-                    <i class="bi bi-funnel me-1"></i>Filter
+                    <i class="bi bi-funnel me-1"></i>{{ __('common.filter') }}
                 </button>
                 @if(request('search') || request('type_id'))
                     <a href="{{ route('drugstore.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -88,11 +88,11 @@
             <thead style="background:#f8fafc;">
                 <tr>
                     <th style="width:50px;" class="ps-4">#</th>
-                    <th>Drug Name</th>
-                    <th>Type</th>
-                    <th style="width:100px;">Unit</th>
-                    <th style="width:130px;" class="text-center">Stock Qty</th>
-                    <th style="width:110px;" class="text-end pe-4">Actions</th>
+                    <th>{{ __('drug.name') }}</th>
+                    <th>{{ __('drug.type') }}</th>
+                    <th style="width:100px;">{{ __('drug.unit') }}</th>
+                    <th style="width:130px;" class="text-center">{{ __('drug.stock_qty') }}</th>
+                    <th style="width:110px;" class="text-end pe-4">{{ __('common.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -119,7 +119,7 @@
                         @if($drug->stock_quantity == 0)
                             <span class="stock-badge stock-zero">
                                 <i class="bi bi-x-circle-fill" style="font-size:.7rem;"></i>
-                                Out of Stock
+                                {{ __('drug.out_of_stock') }}
                             </span>
                         @elseif($drug->stock_quantity <= 10)
                             <span class="stock-badge stock-low">
@@ -152,8 +152,8 @@
                 <tr>
                     <td colspan="6" class="text-center py-5 text-muted">
                         <i class="bi bi-capsule-pill d-block mb-2" style="font-size:2rem;opacity:.3;"></i>
-                        No drugs found.
-                        <a href="{{ route('drugstore.create') }}" class="ms-1">Add your first drug →</a>
+                        {{ __('drug.no_drugs') }}
+                        <a href="{{ route('drugstore.create') }}" class="ms-1">{{ __('drug.add_new') }} →</a>
                     </td>
                 </tr>
                 @endforelse
@@ -164,7 +164,7 @@
     @if($drugs->hasPages())
     <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
         <div class="text-muted" style="font-size:.82rem;">
-            Showing {{ $drugs->firstItem() }}–{{ $drugs->lastItem() }} of {{ $drugs->total() }}
+            {{ __('common.showing') }} {{ $drugs->firstItem() }}–{{ $drugs->lastItem() }} of {{ $drugs->total() }}
         </div>
         {{ $drugs->links() }}
     </div>

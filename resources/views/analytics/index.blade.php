@@ -56,7 +56,7 @@
 <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
     <div>
         <h4 class="mb-0 fw-bold">
-            <i class="bi bi-graph-up-arrow me-2" style="color:#0891b2;"></i>System Analytics
+            <i class="bi bi-graph-up-arrow me-2" style="color:#0891b2;"></i>{{ __('analytics.title') }}
         </h4>
         <div class="text-muted" style="font-size:.82rem;">{{ now()->format('F Y') }} overview</div>
     </div>
@@ -79,15 +79,15 @@
         <div class="kpi-card">
             <i class="kpi-icon bi bi-people-fill" style="color:#2563eb;"></i>
             <div class="kpi-value" style="color:#2563eb;">{{ number_format($totalPatients) }}</div>
-            <div class="kpi-label">Total Patients</div>
-            <div class="kpi-sub"><strong>{{ number_format($activeCases) }}</strong> active cases</div>
+            <div class="kpi-label">{{ __('analytics.total_patients') }}</div>
+            <div class="kpi-sub"><strong>{{ number_format($activeCases) }}</strong> {{ __('analytics.active_cases') }}</div>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="kpi-card">
             <i class="kpi-icon bi bi-clipboard-pulse" style="color:#059669;"></i>
             <div class="kpi-value" style="color:#059669;">{{ number_format($visitsThisMonth) }}</div>
-            <div class="kpi-label">Visits This Month</div>
+            <div class="kpi-label">{{ __('analytics.visits_month') }}</div>
             <div class="kpi-sub"><strong>{{ number_format($visitsThisWeek) }}</strong> last 7 days</div>
         </div>
     </div>
@@ -95,7 +95,7 @@
         <div class="kpi-card">
             <i class="kpi-icon bi bi-cash-stack" style="color:#d97706;"></i>
             <div class="kpi-value" style="color:#d97706;">${{ number_format($revenueThisMonth, 2) }}</div>
-            <div class="kpi-label">Revenue This Month</div>
+            <div class="kpi-label">{{ __('analytics.revenue_month') }}</div>
             <div class="kpi-sub">${{ number_format($totalBilled, 2) }} billed all time</div>
         </div>
     </div>
@@ -105,8 +105,8 @@
             <div class="kpi-value" style="color:{{ $outstanding > 0 ? '#dc2626' : '#059669' }};">
                 ${{ number_format($outstanding, 2) }}
             </div>
-            <div class="kpi-label">Outstanding</div>
-            <div class="kpi-sub">${{ number_format($totalPaid, 2) }} collected total</div>
+            <div class="kpi-label">{{ __('analytics.outstanding') }}</div>
+            <div class="kpi-sub">${{ number_format($totalPaid, 2) }} {{ __('analytics.total_paid') }}</div>
         </div>
     </div>
 </div>
@@ -121,7 +121,7 @@
         <div class="chart-card">
             <div class="chart-title">
                 <i class="bi bi-activity me-1" style="color:#2563eb;"></i>
-                Visits — Last 30 Days
+                {{ __('analytics.visits_30days') }}
             </div>
             <canvas id="visitsChart" height="90"></canvas>
         </div>
@@ -132,7 +132,7 @@
         <div class="chart-card h-100 d-flex flex-column">
             <div class="chart-title">
                 <i class="bi bi-pie-chart me-1" style="color:#7c3aed;"></i>
-                Visit Types — This Month
+                {{ __('analytics.visit_types') }}
             </div>
             <div class="flex-grow-1 d-flex align-items-center justify-content-center">
                 <div style="position:relative;width:180px;height:180px;">
@@ -165,11 +165,11 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <i class="bi bi-clipboard-check me-2"></i>Recent Visits
+                <i class="bi bi-clipboard-check me-2"></i>{{ __('analytics.recent_visits') }}
             </div>
             <div class="card-body p-0">
                 @if($recentVisits->isEmpty())
-                <p class="text-center text-muted py-4 mb-0">No visits recorded yet.</p>
+                <p class="text-center text-muted py-4 mb-0">{{ __('analytics.no_visits') }}</p>
                 @else
                 <table class="table table-hover align-middle mb-0" style="font-size:.82rem;">
                     <thead class="table-light">
@@ -208,7 +208,7 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <i class="bi bi-receipt-cutoff me-2"></i>Recent Invoices
+                <i class="bi bi-receipt-cutoff me-2"></i>{{ __('analytics.recent_invoices') }}
             </div>
             <div class="card-body p-0">
                 @if($recentInvoices->isEmpty())
@@ -250,9 +250,9 @@
 @if($clientSummary !== null)
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-buildings me-2"></i>Per-Client Summary</span>
+        <span><i class="bi bi-buildings me-2"></i>{{ __('analytics.per_client') }}</span>
         <a href="{{ route('admin.clients.index') }}" class="btn btn-sm btn-outline-secondary">
-            Manage Clients
+            {{ __('admin.manage_clients') }}
         </a>
     </div>
     <div class="card-body p-0">

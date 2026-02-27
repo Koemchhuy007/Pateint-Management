@@ -258,8 +258,8 @@
 
             {{-- Heading --}}
             <div class="login-heading mb-4">
-                <h2>Welcome back</h2>
-                <p>Please enter your credentials to access your secure medical portal.</p>
+                <h2>{{ __('auth.welcome') }}</h2>
+                <p>{{ __('auth.credentials') }}</p>
             </div>
 
             {{-- Error alert --}}
@@ -277,7 +277,7 @@
                 {{-- Username --}}
                 <div class="mb-3">
                     <label for="username" class="form-label">
-                        <i class="bi bi-at"></i> Username
+                        <i class="bi bi-at"></i> {{ __('auth.username') }}
                     </label>
                     <input
                         type="text"
@@ -294,7 +294,7 @@
                 {{-- Password --}}
                 <div class="mb-3">
                     <label for="password" class="form-label">
-                        <i class="bi bi-lock"></i> Password
+                        <i class="bi bi-lock"></i> {{ __('auth.password') }}
                     </label>
                     <input
                         type="password"
@@ -315,12 +315,12 @@
                         class="form-check-input mt-0"
                         style="width:1rem; height:1rem; cursor:pointer;"
                     >
-                    <label for="remember" class="form-check-label" style="cursor:pointer;">Remember me</label>
+                    <label for="remember" class="form-check-label" style="cursor:pointer;">{{ __('auth.remember_me') }}</label>
                 </div>
 
                 {{-- Submit --}}
                 <button type="submit" class="btn btn-primary btn-login w-100 d-flex align-items-center justify-content-center gap-2">
-                    <i class="bi bi-box-arrow-in-right"></i> Login
+                    <i class="bi bi-box-arrow-in-right"></i> {{ __('auth.login') }}
                 </button>
             </form>
 
@@ -337,13 +337,13 @@
                 <i class="bi bi-heart-pulse"></i>
             </div>
             <h1>{{ config('app.name') }}</h1>
-            <p>The next generation of secure patient management systems.</p>
+            <p>{{ __('auth.tagline') }}</p>
 
             <div class="feature-pills mt-4">
-                <span class="feature-pill"><i class="bi bi-people-fill"></i> Patient Records</span>
-                <span class="feature-pill"><i class="bi bi-capsule-pill"></i> Drugstore</span>
-                <span class="feature-pill"><i class="bi bi-bar-chart-line-fill"></i> Reports</span>
-                <span class="feature-pill"><i class="bi bi-shield-check"></i> Secure Access</span>
+                <span class="feature-pill"><i class="bi bi-people-fill"></i> {{ __('auth.feature_patients') }}</span>
+                <span class="feature-pill"><i class="bi bi-clipboard-pulse"></i> {{ __('auth.feature_visits') }}</span>
+                <span class="feature-pill"><i class="bi bi-receipt"></i> {{ __('auth.feature_invoices') }}</span>
+                <span class="feature-pill"><i class="bi bi-bar-chart-line-fill"></i> {{ __('auth.feature_reports') }}</span>
             </div>
         </div>
     </div>

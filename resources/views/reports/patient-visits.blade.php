@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Patient Visit Report')
+@section('title', __('report.patient_visit_report'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">Reports</a></li>
-    <li class="breadcrumb-item active">Patient Visit Report</li>
+    <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">{{ __('report.title') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('report.patient_visit_report') }}</li>
 @endsection
 
 @section('content')
 <div class="mb-3 d-flex align-items-center gap-2">
     <a href="{{ route('reports.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Back
+        <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
     </a>
     <h5 class="fw-bold mb-0" style="color:#1e293b;">
-        <i class="bi bi-person-lines-fill me-2" style="color:#2563eb;"></i>Patient Visit Report
+        <i class="bi bi-person-lines-fill me-2" style="color:#2563eb;"></i>{{ __('report.patient_visit_report') }}
     </h5>
 </div>
 
@@ -25,7 +25,7 @@
             {{-- Start Date --}}
             <div class="col-sm-4 col-md-3">
                 <label class="form-label fw-semibold" style="font-size:.85rem;">
-                    Start Date <span class="text-danger">*</span>
+                    {{ __('field.start_date') }} <span class="text-danger">*</span>
                 </label>
                 <div class="input-group">
                     <input type="text"
@@ -50,7 +50,7 @@
             {{-- End Date --}}
             <div class="col-sm-4 col-md-3">
                 <label class="form-label fw-semibold" style="font-size:.85rem;">
-                    End Date <span class="text-danger">*</span>
+                    {{ __('field.end_date') }} <span class="text-danger">*</span>
                 </label>
                 <div class="input-group">
                     <input type="text"
@@ -74,13 +74,13 @@
 
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-search me-1"></i>Generate Report
+                    <i class="bi bi-search me-1"></i>{{ __('report.generate') }}
                 </button>
             </div>
             @isset($startDate)
             <div class="col-auto">
                 <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
-                    <i class="bi bi-printer me-1"></i>Print
+                    <i class="bi bi-printer me-1"></i>{{ __('common.print') }}
                 </button>
             </div>
             @endisset
@@ -95,7 +95,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.6rem;font-weight:700;color:#2563eb;">{{ $summary['total'] }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Total Visits</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('report.total_visits') }}</div>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.6rem;font-weight:700;color:#10b981;">{{ $summary['discharged'] }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Discharged</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('report.discharged') }}</div>
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.6rem;font-weight:700;color:#f59e0b;">{{ $summary['active'] }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Active</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('common.active') }}</div>
             </div>
         </div>
     </div>
@@ -145,7 +145,7 @@
         @if($visits->isEmpty())
             <div class="text-center text-muted py-5">
                 <i class="bi bi-calendar-x" style="font-size:2.5rem; opacity:.35;"></i>
-                <div class="mt-2">No visits found for the selected date range.</div>
+                <div class="mt-2">{{ __('report.no_data_range') }}</div>
             </div>
         @else
         <div class="table-responsive">
@@ -153,15 +153,15 @@
                 <thead style="background:#f8fafc;">
                     <tr>
                         <th class="ps-3">#</th>
-                        <th>Patient</th>
-                        <th>Patient ID</th>
-                        <th>Visit Date</th>
-                        <th>Type</th>
+                        <th>{{ __('patient.title') }}</th>
+                        <th>{{ __('field.patient_id') }}</th>
+                        <th>{{ __('visit.visit_date') }}</th>
+                        <th>{{ __('common.type') }}</th>
                         <th>Doctor</th>
                         <th>Reason</th>
-                        <th>Diagnosis</th>
-                        <th>Status</th>
-                        <th>Discharge Date</th>
+                        <th>{{ __('visit.diagnosis') }}</th>
+                        <th>{{ __('field.status') }}</th>
+                        <th>{{ __('visit.discharge_date') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -187,9 +187,9 @@
                         <td>{{ \Illuminate\Support\Str::limit($visit->diagnosis ?? '—', 50) }}</td>
                         <td>
                             @if($visit->discharge_date)
-                                <span class="badge" style="background:#10b981;">Discharged</span>
+                                <span class="badge" style="background:#10b981;">{{ __('report.discharged') }}</span>
                             @else
-                                <span class="badge" style="background:#f59e0b;">Active</span>
+                                <span class="badge" style="background:#f59e0b;">{{ __('common.active') }}</span>
                             @endif
                         </td>
                         <td>{{ $visit->discharge_date ? $visit->discharge_date->format('d/m/Y') : '—' }}</td>

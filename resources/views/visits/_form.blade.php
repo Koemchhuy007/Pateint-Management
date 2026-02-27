@@ -32,7 +32,7 @@
 
 <div class="row">
     <div class="col-md-4 mb-3">
-        <label class="form-label fw-semibold">Visit Date & Time <span class="text-danger">*</span></label>
+        <label class="form-label fw-semibold">{{ __('visit.visit_date') }} <span class="text-danger">*</span></label>
         <input type="datetime-local"
                name="visit_date"
                class="form-control @error('visit_date') is-invalid @enderror"
@@ -43,7 +43,7 @@
         @enderror
     </div>
     <div class="col-md-4 mb-3">
-        <label class="form-label fw-semibold">Visit Type <span class="text-danger">*</span></label>
+        <label class="form-label fw-semibold">{{ __('field.visit_type') }} <span class="text-danger">*</span></label>
         <div class="d-flex gap-3 mt-1">
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="visit_type" id="visitOPD" value="OPD"
@@ -88,7 +88,7 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label fw-semibold">Diagnosis</label>
+    <label class="form-label fw-semibold">{{ __('visit.diagnosis') }}</label>
     <textarea name="diagnosis"
               class="form-control @error('diagnosis') is-invalid @enderror"
               rows="3">{{ old('diagnosis', $visit->diagnosis ?? '') }}</textarea>
@@ -98,7 +98,7 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label fw-semibold">Treatment / Prescription</label>
+    <label class="form-label fw-semibold">{{ __('visit.prescription') }}</label>
     <textarea name="treatment"
               class="form-control @error('treatment') is-invalid @enderror"
               rows="3">{{ old('treatment', $visit->treatment ?? '') }}</textarea>
@@ -119,7 +119,7 @@
 
 <div class="mt-4">
     <div class="fw-semibold mb-2" style="color:#16a34a;font-size:.95rem;">
-        <i class="bi bi-capsule-pill me-1"></i>Doctor's Prescription
+        <i class="bi bi-capsule-pill me-1"></i>{{ __('visit.doctors_prescription') }}
     </div>
 
     <div class="table-responsive">
@@ -127,15 +127,15 @@
             <thead style="background:#16a34a;color:#fff;">
                 <tr>
                     <th style="width:36px;" class="text-center">No.</th>
-                    <th>Medication Name</th>
+                    <th>{{ __('field.medication_name') }}</th>
                     <th style="width:120px;">Method</th>
-                    <th style="width:68px;" class="text-center">Morning</th>
-                    <th style="width:74px;" class="text-center">Afternoon</th>
-                    <th style="width:62px;" class="text-center">Evening</th>
-                    <th style="width:56px;" class="text-center">Night</th>
-                    <th style="width:80px;" class="text-center">Number Day</th>
-                    <th style="width:70px;" class="text-center">Quantity</th>
-                    <th style="width:100px;">Unit</th>
+                    <th style="width:68px;" class="text-center">{{ __('field.morning') }}</th>
+                    <th style="width:74px;" class="text-center">{{ __('field.afternoon') }}</th>
+                    <th style="width:62px;" class="text-center">{{ __('field.evening') }}</th>
+                    <th style="width:56px;" class="text-center">{{ __('field.night') }}</th>
+                    <th style="width:80px;" class="text-center">{{ __('field.duration') }}</th>
+                    <th style="width:70px;" class="text-center">{{ __('field.quantity') }}</th>
+                    <th style="width:100px;">{{ __('field.unit') }}</th>
                     <th style="width:140px;">Remark</th>
                     <th style="width:36px;" class="text-center">
                         <button type="button" class="btn btn-sm btn-primary rounded-circle p-0"
@@ -201,7 +201,7 @@
         <div class="form-check">
             <input class="form-check-input" type="checkbox" name="consulting" id="consultingCheck" value="1"
                    {{ old('consulting', isset($visit) ? $visit->consulting : false) ? 'checked' : '' }}>
-            <label class="form-check-label fw-semibold" for="consultingCheck">Consulting</label>
+            <label class="form-check-label fw-semibold" for="consultingCheck">{{ __('visit.consulting') }}</label>
         </div>
         <div id="consultingNotesBox" class="mt-2" style="{{ old('consulting', isset($visit) ? $visit->consulting : false) ? '' : 'display:none;' }}">
             <textarea name="notes"
@@ -219,7 +219,7 @@
 {{-- Follow-up Date (below Doctor's Prescription) --}}
 <div class="row mt-3">
     <div class="col-md-4 mb-3">
-        <label class="form-label fw-semibold">Follow-up Date</label>
+        <label class="form-label fw-semibold">Follow-up {{ __('field.date') }}</label>
         <input type="date"
                name="follow_up_date"
                class="form-control @error('follow_up_date') is-invalid @enderror"

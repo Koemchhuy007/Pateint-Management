@@ -11,17 +11,17 @@
 <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
     <div class="d-flex align-items-center gap-2">
         <i class="bi bi-shield-lock-fill" style="color:#f59e0b;font-size:1.4rem;"></i>
-        <h4 class="mb-0 fw-bold">Super Admin Dashboard</h4>
+        <h4 class="mb-0 fw-bold">{{ __('admin.dashboard') }}</h4>
     </div>
     <div class="d-flex gap-2 flex-wrap">
         <a href="{{ route('admin.system-admins.create') }}" class="btn btn-sm btn-primary">
-            <i class="bi bi-person-badge me-1"></i>Add System Admin
+            <i class="bi bi-person-badge me-1"></i>{{ __('admin.add_system_admin') }}
         </a>
         <a href="{{ route('admin.clients.create') }}" class="btn btn-sm btn-outline-primary">
-            <i class="bi bi-building-add me-1"></i>Add Client
+            <i class="bi bi-building-add me-1"></i>{{ __('admin.add_client') }}
         </a>
         <a href="{{ route('analytics.index') }}" class="btn btn-sm btn-outline-secondary">
-            <i class="bi bi-graph-up-arrow me-1"></i>Analytics
+            <i class="bi bi-graph-up-arrow me-1"></i>{{ __('nav.analytics') }}
         </a>
     </div>
 </div>

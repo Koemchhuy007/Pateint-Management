@@ -3,7 +3,7 @@
 @section('title', 'Visit — ' . $patient->full_name)
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">Patients</a></li>
+<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">{{ __('patient.title') }}</a></li>
 <li class="breadcrumb-item"><a href="{{ route('patients.show', $patient) }}">{{ $patient->full_name }}</a></li>
 <li class="breadcrumb-item active">{{ $visit->visit_date->format('d/m/Y') }}</li>
 @endsection
@@ -55,15 +55,15 @@
                 <div class="d-flex gap-2 no-print">
                     <a href="{{ route('patients.visits.edit', [$patient, $visit]) }}"
                        class="btn btn-primary btn-sm">
-                        <i class="bi bi-pencil me-1"></i>Edit
+                        <i class="bi bi-pencil me-1"></i>{{ __('common.edit') }}
                     </a>
                     <button type="button" onclick="window.print()"
                             class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-printer me-1"></i>Print Visit
+                        <i class="bi bi-printer me-1"></i>{{ __('visit.print') }}
                     </button>
                     <a href="{{ route('patients.show', $patient) }}"
                        class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-arrow-left me-1"></i>Back
+                        <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
                     </a>
                 </div>
             </div>
@@ -72,9 +72,9 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <table class="table table-borderless table-sm mb-0">
-                            <tr><th width="40%">Visit Date</th><td>{{ $visit->visit_date->format('d/m/Y H:i') }}</td></tr>
+                            <tr><th width="40%">{{ __('visit.visit_date') }}</th><td>{{ $visit->visit_date->format('d/m/Y H:i') }}</td></tr>
                             <tr>
-                                <th>Visit Type</th>
+                                <th>{{ __('field.visit_type') }}</th>
                                 <td>
                                     @if($visit->visit_type === 'OPD')
                                         <span class="badge" style="background:#0ea5e9;">OPD</span>
@@ -98,7 +98,7 @@
                                             <i class="bi bi-check-circle me-1"></i>Discharged {{ $visit->discharge_date->format('d/m/Y') }}
                                         </span>
                                     @else
-                                        <span class="badge bg-success">Active Case</span>
+                                        <span class="badge bg-success">{{ __('patient.active_case') }}</span>
                                     @endif
                                 </td>
                             </tr>
@@ -147,14 +147,14 @@
                 <hr class="my-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <div class="fw-semibold" style="color:#16a34a;font-size:.95rem;">
-                        <i class="bi bi-capsule-pill me-1"></i>Doctor's Prescription
+                        <i class="bi bi-capsule-pill me-1"></i>{{ __('visit.doctors_prescription') }}
                     </div>
                     @if(!empty($visit->prescription))
                     <button type="button"
                             onclick="printPrescription()"
                             class="btn btn-sm no-print"
                             style="background:#16a34a;color:#fff;border:none;">
-                        <i class="bi bi-printer me-1"></i>Print Prescription
+                        <i class="bi bi-printer me-1"></i>{{ __('visit.print_prescription') }}
                     </button>
                     @endif
                 </div>

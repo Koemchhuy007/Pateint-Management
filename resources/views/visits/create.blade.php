@@ -3,9 +3,9 @@
 @section('title', 'Add New Case — ' . $patient->full_name)
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">Patients</a></li>
+<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">{{ __('patient.title') }}</a></li>
 <li class="breadcrumb-item"><a href="{{ route('patients.show', $patient) }}">{{ $patient->full_name }}</a></li>
-<li class="breadcrumb-item active">Add New Case</li>
+<li class="breadcrumb-item active">{{ __('visit.create') }}</li>
 @endsection
 
 @section('content')
@@ -25,10 +25,10 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span>
-                    <i class="bi bi-clipboard-plus me-2"></i>Add New Case
+                    <i class="bi bi-clipboard-plus me-2"></i>{{ __('visit.create') }}
                 </span>
                 <a href="{{ route('patients.show', $patient) }}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left me-1"></i>Back
+                    <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
                 </a>
             </div>
             <div class="card-body">
@@ -37,9 +37,9 @@
                     @include('visits._form')
                     <div class="d-flex gap-2 mt-3">
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-lg me-1"></i>Save Visit
+                            <i class="bi bi-check-lg me-1"></i>{{ __('visit.save') }}
                         </button>
-                        <a href="{{ route('patients.show', $patient) }}" class="btn btn-outline-secondary">Cancel</a>
+                        <a href="{{ route('patients.show', $patient) }}" class="btn btn-outline-secondary">{{ __('common.cancel') }}</a>
                     </div>
                 </form>
             </div>

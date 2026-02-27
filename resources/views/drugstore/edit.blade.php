@@ -13,9 +13,9 @@
 
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-pencil me-2 text-primary"></i>Edit Drug</span>
+                <span><i class="bi bi-pencil me-2 text-primary"></i>{{ __('drug.edit') }}</span>
                 <a href="{{ route('drugstore.index') }}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left me-1"></i>Back
+                    <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
                 </a>
             </div>
             <div class="card-body p-4">
@@ -27,7 +27,7 @@
 
                         <div class="col-12">
                             <label class="form-label fw-semibold">
-                                Drug Name <span class="text-danger">*</span>
+                                {{ __('drug.name') }} <span class="text-danger">*</span>
                             </label>
                             <input type="text" name="name"
                                    class="form-control @error('name') is-invalid @enderror"
@@ -38,11 +38,11 @@
 
                         <div class="col-sm-6">
                             <label class="form-label fw-semibold">
-                                Drug Type <span class="text-danger">*</span>
+                                {{ __('drug.type') }} <span class="text-danger">*</span>
                             </label>
                             <select name="drug_type_id"
                                     class="form-select @error('drug_type_id') is-invalid @enderror" required>
-                                <option value="">— Select Type —</option>
+                                <option value="">{{ __('placeholder.select_type') }}</option>
                                 @foreach($drugTypes as $type)
                                     <option value="{{ $type->id }}"
                                         {{ old('drug_type_id', $drug->drug_type_id) == $type->id ? 'selected' : '' }}>
@@ -54,9 +54,9 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <label class="form-label fw-semibold">Unit</label>
+                            <label class="form-label fw-semibold">{{ __('drug.unit') }}</label>
                             <select name="unit" class="form-select @error('unit') is-invalid @enderror">
-                                <option value="">— Select Unit —</option>
+                                <option value="">{{ __('placeholder.select_unit') }}</option>
                                 @foreach(['Pill','Tablet','Capsule','ml','mg','Drop','Patch','Sachet','Vial','Tube','Bottle','Ampoule'] as $u)
                                     <option value="{{ $u }}"
                                         {{ old('unit', $drug->unit) == $u ? 'selected' : '' }}>{{ $u }}</option>
@@ -67,7 +67,7 @@
 
                         <div class="col-sm-6">
                             <label class="form-label fw-semibold">
-                                Stock Quantity <span class="text-danger">*</span>
+                                {{ __('drug.stock_qty') }} <span class="text-danger">*</span>
                             </label>
                             <input type="number" name="stock_quantity"
                                    class="form-control @error('stock_quantity') is-invalid @enderror"
@@ -83,9 +83,9 @@
 
                         <div class="col-12 d-flex gap-2 mt-2">
                             <button type="submit" class="btn btn-primary px-4">
-                                <i class="bi bi-check-lg me-1"></i>Update Drug
+                                <i class="bi bi-check-lg me-1"></i>{{ __('drug.update') }}
                             </button>
-                            <a href="{{ route('drugstore.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                            <a href="{{ route('drugstore.index') }}" class="btn btn-outline-secondary">{{ __('common.cancel') }}</a>
                         </div>
 
                     </div>
@@ -98,13 +98,13 @@
             <div class="card-body d-flex justify-content-between align-items-center py-3">
                 <div>
                     <div class="fw-semibold text-danger" style="font-size:.88rem;">Delete this drug</div>
-                    <div class="text-muted" style="font-size:.78rem;">This action cannot be undone.</div>
+                    <div class="text-muted" style="font-size:.78rem;">{{ __('common.cannot_undo') }}</div>
                 </div>
                 <form action="{{ route('drugstore.destroy', $drug) }}" method="POST"
                       onsubmit="return confirm('Delete {{ addslashes($drug->name) }}?')">
                     @csrf @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger">
-                        <i class="bi bi-trash me-1"></i>Delete
+                        <i class="bi bi-trash me-1"></i>{{ __('common.delete') }}
                     </button>
                 </form>
             </div>

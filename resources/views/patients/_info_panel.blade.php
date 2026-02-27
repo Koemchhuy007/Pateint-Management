@@ -118,17 +118,17 @@
 
                 <div class="d-grid mb-3">
                     <a href="{{ route('patients.edit', $patient) }}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-pencil me-1"></i>Edit Patient
+                        <i class="bi bi-pencil me-1"></i>{{ __('patient.edit') }}
                     </a>
                 </div>
 
                 {{-- ── Personal ── --}}
-                <div class="panel-section-title"><i class="bi bi-person-fill"></i>Personal</div>
+                <div class="panel-section-title"><i class="bi bi-person-fill"></i>{{ __('patient.section_personal') }}</div>
 
                 <div class="info-row">
                     <div class="info-row-icon"><i class="bi bi-calendar3"></i></div>
                     <div>
-                        <div class="info-row-label">Date of Birth</div>
+                        <div class="info-row-label">{{ __('field.dob') }}</div>
                         <div class="info-row-value">{{ $patient->date_of_birth->format('d/m/Y') }}</div>
                     </div>
                 </div>
@@ -136,26 +136,26 @@
                 <div class="info-row">
                     <div class="info-row-icon"><i class="bi bi-clock"></i></div>
                     <div>
-                        <div class="info-row-label">Age</div>
-                        <div class="info-row-value">{{ $patient->age ? $patient->age . ' years' : '—' }}</div>
+                        <div class="info-row-label">{{ __('field.age') }}</div>
+                        <div class="info-row-value">{{ $patient->age ? $patient->age . ' ' . __('patient.age_years') : '—' }}</div>
                     </div>
                 </div>
 
                 <div class="info-row">
                     <div class="info-row-icon"><i class="bi bi-heart"></i></div>
                     <div>
-                        <div class="info-row-label">Marital Status</div>
+                        <div class="info-row-label">{{ __('field.marital_status') }}</div>
                         <div class="info-row-value">{{ ucfirst($patient->personal_status ?? '—') }}</div>
                     </div>
                 </div>
 
                 {{-- ── Contact ── --}}
-                <div class="panel-section-title"><i class="bi bi-telephone-fill"></i>Contact</div>
+                <div class="panel-section-title"><i class="bi bi-telephone-fill"></i>{{ __('patient.section_contact') }}</div>
 
                 <div class="info-row">
                     <div class="info-row-icon"><i class="bi bi-phone"></i></div>
                     <div>
-                        <div class="info-row-label">Phone</div>
+                        <div class="info-row-label">{{ __('field.phone') }}</div>
                         <div class="info-row-value">{{ $patient->phone ?? '—' }}</div>
                     </div>
                 </div>
@@ -171,18 +171,18 @@
                 <div class="info-row">
                     <div class="info-row-icon"><i class="bi bi-geo-alt"></i></div>
                     <div>
-                        <div class="info-row-label">Address</div>
+                        <div class="info-row-label">{{ __('field.address') }}</div>
                         <div class="info-row-value">{{ $patient->full_address ?: ($patient->address ?? '—') }}</div>
                     </div>
                 </div>
 
                 {{-- ── Emergency ── --}}
-                <div class="panel-section-title"><i class="bi bi-exclamation-triangle-fill"></i>Emergency</div>
+                <div class="panel-section-title"><i class="bi bi-exclamation-triangle-fill"></i>{{ __('patient.section_emergency') }}</div>
 
                 <div class="info-row">
                     <div class="info-row-icon"><i class="bi bi-person-lines-fill"></i></div>
                     <div>
-                        <div class="info-row-label">Contact Name</div>
+                        <div class="info-row-label">{{ __('field.emergency_contact') }}</div>
                         <div class="info-row-value">{{ $patient->emergency_contact_name ?? '—' }}</div>
                     </div>
                 </div>
@@ -190,7 +190,7 @@
                 <div class="info-row">
                     <div class="info-row-icon"><i class="bi bi-telephone-fill"></i></div>
                     <div>
-                        <div class="info-row-label">Contact Phone</div>
+                        <div class="info-row-label">{{ __('field.phone') }}</div>
                         <div class="info-row-value">{{ $patient->emergency_contact_phone ?? '—' }}</div>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
 
                 {{-- ── Medical Notes ── --}}
                 @if($patient->medical_notes)
-                <div class="panel-section-title"><i class="bi bi-journal-medical"></i>Medical Notes</div>
+                <div class="panel-section-title"><i class="bi bi-journal-medical"></i>{{ __('patient.section_medical') }}</div>
                 <div style="font-size:.83rem;color:#475569;line-height:1.55;background:#f8fafc;border-radius:8px;padding:10px 12px;">
                     {{ $patient->medical_notes }}
                 </div>

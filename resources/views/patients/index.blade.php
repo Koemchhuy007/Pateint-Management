@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'All Patients')
+@section('title', __('patient.title'))
 
 @section('breadcrumb')
-<li class="breadcrumb-item active">Patients</li>
+<li class="breadcrumb-item active">{{ __('patient.title') }}</li>
 @endsection
 
 @section('content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <span><i class="bi bi-people me-2"></i>Patient Records</span>
+        <span><i class="bi bi-people me-2"></i>{{ __('patient.title') }}</span>
         <a href="{{ route('patients.create') }}" class="btn btn-primary btn-sm">
-            <i class="bi bi-plus-lg me-1"></i>Add Patient
+            <i class="bi bi-plus-lg me-1"></i>{{ __('patient.create') }}
         </a>
     </div>
     <div class="card-body">
@@ -20,19 +20,19 @@
         <form method="GET" class="row g-2 mb-4">
             <div class="col-md-5">
                 <input type="text" name="search" class="form-control"
-                       placeholder="Search by name, ID, phone..."
+                       placeholder="{{ __('placeholder.patient_search') }}"
                        value="{{ request('search') }}">
             </div>
             <div class="col-md-2">
                 <select name="status" class="form-select">
-                    <option value="">All statuses</option>
-                    <option value="active"   {{ request('status') === 'active'   ? 'selected' : '' }}>Active Case</option>
-                    <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Discharged</option>
+                    <option value="">{{ __('common.all') }}</option>
+                    <option value="active"   {{ request('status') === 'active'   ? 'selected' : '' }}>{{ __('patient.active_case') }}</option>
+                    <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>{{ __('patient.discharge') }}</option>
                 </select>
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-outline-primary w-100">
-                    <i class="bi bi-search me-1"></i>Search
+                    <i class="bi bi-search me-1"></i>{{ __('common.search') }}
                 </button>
             </div>
         </form>
@@ -42,13 +42,13 @@
                 <thead class="table-light">
                     <tr>
                         <th class="text-center" style="width:50px">#</th>
-                        <th>Last Visit</th>
-                        <th>Patient Name</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Sex</th>
-                        <th class="text-center">Age</th>
-                        <th>Address</th>
-                        <th class="text-center" style="width:120px">Actions</th>
+                        <th>{{ __('field.last_visit') }}</th>
+                        <th>{{ __('patient.title') }}</th>
+                        <th class="text-center">{{ __('field.status') }}</th>
+                        <th class="text-center">{{ __('field.sex') }}</th>
+                        <th class="text-center">{{ __('field.age') }}</th>
+                        <th>{{ __('field.address') }}</th>
+                        <th class="text-center" style="width:120px">{{ __('common.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,9 +79,9 @@
                             {{-- Status --}}
                             <td class="text-center">
                                 @if($patient->undischarged_count > 0)
-                                    <span class="badge bg-success">Active Case</span>
+                                    <span class="badge bg-success">{{ __('patient.active_case') }}</span>
                                 @else
-                                    <span class="badge bg-secondary">Discharged</span>
+                                    <span class="badge bg-secondary">{{ __('patient.discharge') }}</span>
                                 @endif
                             </td>
 
@@ -139,8 +139,8 @@
                         <tr>
                             <td colspan="8" class="text-center py-5 text-muted">
                                 <i class="bi bi-inbox display-4 d-block mb-2"></i>
-                                No patients found.
-                                <a href="{{ route('patients.create') }}">Add your first patient</a>
+                                {{ __('patient.no_found') }}
+                                <a href="{{ route('patients.create') }}">{{ __('patient.add_first') }}</a>
                             </td>
                         </tr>
                     @endforelse

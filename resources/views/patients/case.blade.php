@@ -25,10 +25,10 @@
             <div class="d-flex gap-2 flex-wrap">
                 <span class="badge badge-{{ $patient->status }} fs-6 px-3 py-2">{{ ucfirst($patient->status) }}</span>
                 <a href="{{ route('patients.visits.create', $patient) }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i>Add New Visit
+                    <i class="bi bi-plus-lg me-1"></i>{{ __('visit.create') }}
                 </a>
                 <a href="{{ route('patients.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left me-1"></i>Back
+                    <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
                 </a>
             </div>
         </div>
@@ -38,7 +38,7 @@
 {{-- Visit History --}}
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-clipboard-pulse me-2"></i>Visit History
+        <span><i class="bi bi-clipboard-pulse me-2"></i>{{ __('patient.visit_history') }}
             <span class="badge bg-secondary ms-1">{{ $patient->visits->count() }}</span>
         </span>
     </div>
@@ -46,9 +46,9 @@
         @if($patient->visits->isEmpty())
             <div class="text-center text-muted py-5">
                 <i class="bi bi-inbox display-4 d-block mb-3"></i>
-                <p class="mb-2">No visits recorded for this patient yet.</p>
+                <p class="mb-2">{{ __('visit.no_visits_yet') }}</p>
                 <a href="{{ route('patients.visits.create', $patient) }}" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-lg me-1"></i>Record First Visit
+                    <i class="bi bi-plus-lg me-1"></i>{{ __('visit.create') }}
                 </a>
             </div>
         @else
@@ -56,12 +56,12 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Date & Time</th>
+                            <th>{{ __('visit.visit_date') }}</th>
                             <th>Reason</th>
-                            <th>Diagnosis</th>
+                            <th>{{ __('visit.diagnosis') }}</th>
                             <th>Doctor</th>
                             <th>Follow-up</th>
-                            <th width="120">Actions</th>
+                            <th width="120">{{ __('common.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,10 +95,10 @@
                                     </a>
                                     <form action="{{ route('patients.visits.destroy', [$patient, $visit]) }}"
                                           method="POST" class="d-inline"
-                                          onsubmit="return confirm('Delete this visit record?');">
+                                          onsubmit="return confirm('{{ __('visit.delete_confirm') }}');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger" title="Delete">
+                                        <button type="submit" class="btn btn-outline-danger" title="{{ __('common.delete') }}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>

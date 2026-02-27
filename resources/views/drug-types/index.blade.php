@@ -11,10 +11,10 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <h5 class="fw-bold mb-0" style="color:#1e293b;">
-        <i class="bi bi-tags me-2 text-primary"></i>Drug Types
+        <i class="bi bi-tags me-2 text-primary"></i>{{ __('drug.types') }}
     </h5>
     <a href="{{ route('drugstore.index') }}" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i>Back to Drugstore
+        <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
     </a>
 </div>
 
@@ -24,19 +24,19 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                <i class="bi bi-plus-circle me-2 text-success"></i>Add Drug Type
+                <i class="bi bi-plus-circle me-2 text-success"></i>{{ __('drug.add_new_type') }}
             </div>
             <div class="card-body">
                 <form action="{{ route('drug-types.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label fw-semibold" style="font-size:.83rem;">
-                            Type Name <span class="text-danger">*</span>
+                            {{ __('drug.type_name') }} <span class="text-danger">*</span>
                         </label>
                         <input type="text" name="name"
                                class="form-control @error('name') is-invalid @enderror"
                                value="{{ old('name') }}"
-                               placeholder="e.g. Antibiotic, Analgesic…"
+                               placeholder="{{ __('placeholder.type_name') }}"
                                required>
                         @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
@@ -48,7 +48,7 @@
                                placeholder="Optional description">
                     </div>
                     <button type="submit" class="btn btn-primary btn-sm w-100">
-                        <i class="bi bi-plus-lg me-1"></i>Add Type
+                        <i class="bi bi-plus-lg me-1"></i>{{ __('drug.save_type') }}
                     </button>
                 </form>
             </div>
@@ -148,9 +148,9 @@
                 </div>
                 <div class="modal-footer py-2">
                     <button type="button" class="btn btn-sm btn-outline-secondary"
-                            data-bs-dismiss="modal">Cancel</button>
+                            data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
                     <button type="submit" class="btn btn-sm btn-primary">
-                        <i class="bi bi-check-lg me-1"></i>Save
+                        <i class="bi bi-check-lg me-1"></i>{{ __('drug.update_type') }}
                     </button>
                 </div>
             </form>

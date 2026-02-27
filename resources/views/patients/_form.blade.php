@@ -72,7 +72,7 @@
 <div class="form-section">
     <div class="form-section-header">
         <span class="section-icon"><i class="bi bi-person-fill"></i></span>
-        Personal Information
+        {{ __('patient.section_personal') }}
     </div>
     <div class="row g-3 align-items-start">
 
@@ -81,7 +81,7 @@
             <div class="row g-3">
                 <div class="col-sm-4">
                     <label class="form-label fw-semibold" style="font-size:.83rem;">
-                        Patient ID
+                        {{ __('field.patient_id') }}
                         <span class="badge bg-secondary ms-1" style="font-size:.58rem;vertical-align:middle;">Auto</span>
                     </label>
                     @if(isset($patient) && $patient->exists)
@@ -113,19 +113,19 @@
                 </div>
                 <div class="col-sm-3">
                     <label class="form-label fw-semibold" style="font-size:.83rem;">
-                        Sex <span class="text-danger">*</span>
+                        {{ __('field.sex') }} <span class="text-danger">*</span>
                     </label>
                     <select name="sex" class="form-select @error('sex') is-invalid @enderror" required>
-                        <option value="">— Select —</option>
-                        <option value="male"   {{ old('sex', $patient->sex ?? '') == 'male'   ? 'selected' : '' }}>Male</option>
-                        <option value="female" {{ old('sex', $patient->sex ?? '') == 'female' ? 'selected' : '' }}>Female</option>
-                        <option value="other"  {{ old('sex', $patient->sex ?? '') == 'other'  ? 'selected' : '' }}>Other</option>
+                        <option value="">{{ __('placeholder.select') }}</option>
+                        <option value="male"   {{ old('sex', $patient->sex ?? '') == 'male'   ? 'selected' : '' }}>{{ __('gender.male') }}</option>
+                        <option value="female" {{ old('sex', $patient->sex ?? '') == 'female' ? 'selected' : '' }}>{{ __('gender.female') }}</option>
+                        <option value="other"  {{ old('sex', $patient->sex ?? '') == 'other'  ? 'selected' : '' }}>{{ __('gender.other') }}</option>
                     </select>
                     @error('sex')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-sm-4">
                     <label class="form-label fw-semibold" style="font-size:.83rem;">
-                        Date of Birth <span class="text-danger">*</span>
+                        {{ __('field.dob') }} <span class="text-danger">*</span>
                     </label>
                     <input type="date" name="date_of_birth"
                            class="form-control @error('date_of_birth') is-invalid @enderror"
@@ -133,12 +133,12 @@
                     @error('date_of_birth')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-sm-2">
-                    <label class="form-label fw-semibold" style="font-size:.83rem;">Age</label>
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.age') }}</label>
                     <input type="text" id="age_display" class="form-control bg-light text-muted"
                            value="{{ isset($patient) && $patient->date_of_birth ? $patient->age . ' yrs' : '—' }}" readonly>
                 </div>
                 <div class="col-sm-3">
-                    <label class="form-label fw-semibold" style="font-size:.83rem;">Marital Status</label>
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.marital_status') }}</label>
                     <select name="personal_status" class="form-select">
                         <option value="">—</option>
                         <option value="single"   {{ old('personal_status', $patient->personal_status ?? '') == 'single'   ? 'selected' : '' }}>Single</option>
@@ -147,7 +147,7 @@
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    <label class="form-label fw-semibold" style="font-size:.83rem;">Blood Type</label>
+                    <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.blood_type') }}</label>
                     <select name="blood_type" class="form-select">
                         <option value="">—</option>
                         @foreach(['A+','A-','B+','B-','O+','O-','AB+','AB-'] as $bt)
@@ -192,11 +192,11 @@
 <div class="form-section">
     <div class="form-section-header">
         <span class="section-icon"><i class="bi bi-telephone-fill"></i></span>
-        Contact
+        {{ __('patient.section_contact') }}
     </div>
     <div class="row g-3">
         <div class="col-sm-6">
-            <label class="form-label fw-semibold" style="font-size:.83rem;">Phone</label>
+            <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.phone') }}</label>
             <div class="input-group">
                 <span class="input-group-text bg-light border-end-0 text-muted">
                     <i class="bi bi-phone"></i>
@@ -226,7 +226,7 @@
 <div class="form-section">
     <div class="form-section-header">
         <span class="section-icon"><i class="bi bi-geo-alt-fill"></i></span>
-        Address
+        {{ __('patient.section_address') }}
     </div>
     <div class="row g-3">
         <div class="col-12">
@@ -235,36 +235,36 @@
                       placeholder="Street, house number...">{{ old('address', $patient->address ?? '') }}</textarea>
         </div>
         <div class="col-sm-3">
-            <label class="form-label fw-semibold" style="font-size:.83rem;">Province</label>
+            <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.province') }}</label>
             <select name="province_id" id="province_id" class="form-select">
-                <option value="">— Province —</option>
+                <option value="">{{ __('placeholder.province') }}</option>
                 @foreach($provinces ?? [] as $p)
                     <option value="{{ $p->id }}" {{ old('province_id', $patient->province_id ?? '') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="col-sm-3">
-            <label class="form-label fw-semibold" style="font-size:.83rem;">District</label>
+            <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.district') }}</label>
             <select name="district_id" id="district_id" class="form-select">
-                <option value="">— District —</option>
+                <option value="">{{ __('placeholder.district') }}</option>
                 @if(isset($patient) && $patient->district)
                     <option value="{{ $patient->district_id }}" selected>{{ $patient->district->name }}</option>
                 @endif
             </select>
         </div>
         <div class="col-sm-3">
-            <label class="form-label fw-semibold" style="font-size:.83rem;">Community</label>
+            <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.community') }}</label>
             <select name="community_id" id="community_id" class="form-select">
-                <option value="">— Community —</option>
+                <option value="">{{ __('placeholder.community') }}</option>
                 @if(isset($patient) && $patient->community)
                     <option value="{{ $patient->community_id }}" selected>{{ $patient->community->name }}</option>
                 @endif
             </select>
         </div>
         <div class="col-sm-3">
-            <label class="form-label fw-semibold" style="font-size:.83rem;">Village</label>
+            <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.village') }}</label>
             <select name="village_id" id="village_id" class="form-select">
-                <option value="">— Village —</option>
+                <option value="">{{ __('placeholder.village') }}</option>
                 @if(isset($patient) && $patient->village)
                     <option value="{{ $patient->village_id }}" selected>{{ $patient->village->name }}</option>
                 @endif
@@ -277,22 +277,22 @@
 <div class="form-section">
     <div class="form-section-header">
         <span class="section-icon" style="background:#fff7ed;color:#ea580c;"><i class="bi bi-exclamation-triangle-fill"></i></span>
-        Emergency &amp; Insurance
+        {{ __('patient.section_emergency') }}
     </div>
     <div class="row g-3">
         <div class="col-sm-4">
-            <label class="form-label fw-semibold" style="font-size:.83rem;">Emergency Contact Name</label>
+            <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.emergency_contact') }}</label>
             <input type="text" name="emergency_contact_name"
                    class="form-control @error('emergency_contact_name') is-invalid @enderror"
                    value="{{ old('emergency_contact_name', $patient->emergency_contact_name ?? '') }}"
-                   placeholder="Full name">
+                   placeholder="{{ __('placeholder.full_name') }}">
         </div>
         <div class="col-sm-4">
-            <label class="form-label fw-semibold" style="font-size:.83rem;">Emergency Contact Phone</label>
+            <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('field.phone') }}</label>
             <input type="text" name="emergency_contact_phone"
                    class="form-control @error('emergency_contact_phone') is-invalid @enderror"
                    value="{{ old('emergency_contact_phone', $patient->emergency_contact_phone ?? '') }}"
-                   placeholder="Phone number">
+                   placeholder="{{ __('placeholder.phone') }}">
         </div>
         <div class="col-sm-4">
             <label class="form-label fw-semibold" style="font-size:.83rem;">Insurance Info</label>
@@ -308,7 +308,7 @@
 <div class="form-section mb-0">
     <div class="form-section-header">
         <span class="section-icon" style="background:#f0fdf4;color:#16a34a;"><i class="bi bi-journal-medical"></i></span>
-        Medical Notes
+        {{ __('patient.section_medical') }}
     </div>
     <textarea name="medical_notes" class="form-control" rows="3"
               placeholder="Allergies, chronic conditions, important notes...">{{ old('medical_notes', $patient->medical_notes ?? '') }}</textarea>

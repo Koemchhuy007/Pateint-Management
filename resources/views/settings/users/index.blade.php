@@ -25,14 +25,14 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h5 class="fw-bold mb-0" style="color:#1e293b;">
-                    <i class="bi bi-people-fill me-2 text-primary"></i>Users
+                    <i class="bi bi-people-fill me-2 text-primary"></i>{{ __('settings.users') }}
                 </h5>
                 <div class="text-muted mt-1" style="font-size:.82rem;">
                     {{ $users->count() }} user{{ $users->count() != 1 ? 's' : '' }}
                 </div>
             </div>
             <a href="{{ route('settings.users.create') }}" class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-lg me-1"></i>Add User
+                <i class="bi bi-plus-lg me-1"></i>{{ __('settings.add_user') }}
             </a>
         </div>
 
@@ -42,11 +42,11 @@
                     <thead style="background:#f8fafc;">
                         <tr>
                             <th class="ps-4" style="width:50px;">#</th>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th style="width:130px;">Role</th>
-                            <th style="width:110px;" class="text-end pe-4">Actions</th>
+                            <th>{{ __('field.name') }}</th>
+                            <th>{{ __('field.username') }}</th>
+                            <th>{{ __('field.email') }}</th>
+                            <th style="width:130px;">{{ __('field.role') }}</th>
+                            <th style="width:110px;" class="text-end pe-4">{{ __('common.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,8 +87,8 @@
                         <tr>
                             <td colspan="6" class="text-center py-5 text-muted">
                                 <i class="bi bi-people d-block mb-2" style="font-size:2rem;opacity:.3;"></i>
-                                No users yet.
-                                <a href="{{ route('settings.users.create') }}">Add one →</a>
+                                {{ __('settings.no_users') }}
+                                <a href="{{ route('settings.users.create') }}">{{ __('settings.add_user') }} →</a>
                             </td>
                         </tr>
                         @endforelse

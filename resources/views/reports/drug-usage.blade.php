@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Drug Usage Report')
+@section('title', __('report.drug_usage_report'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">Reports</a></li>
-    <li class="breadcrumb-item active">Drug Usage Report</li>
+    <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">{{ __('report.title') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('report.drug_usage_report') }}</li>
 @endsection
 
 @section('content')
 <div class="mb-3 d-flex align-items-center gap-2">
     <a href="{{ route('reports.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Back
+        <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
     </a>
     <h5 class="fw-bold mb-0" style="color:#1e293b;">
-        <i class="bi bi-capsule-pill me-2" style="color:#16a34a;"></i>Drug Usage Report
+        <i class="bi bi-capsule-pill me-2" style="color:#16a34a;"></i>{{ __('report.drug_usage_report') }}
     </h5>
 </div>
 
@@ -74,13 +74,13 @@
 
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary" style="background:#16a34a;border-color:#16a34a;">
-                    <i class="bi bi-search me-1"></i>Generate Report
+                    <i class="bi bi-search me-1"></i>{{ __('report.generate') }}
                 </button>
             </div>
             @isset($startDate)
             <div class="col-auto">
                 <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
-                    <i class="bi bi-printer me-1"></i>Print
+                    <i class="bi bi-printer me-1"></i>{{ __('common.print') }}
                 </button>
             </div>
             @endisset
@@ -101,7 +101,7 @@
         @if(empty($usage))
             <div class="text-center text-muted py-5">
                 <i class="bi bi-capsule" style="font-size:2.5rem; opacity:.35;"></i>
-                <div class="mt-2">No drug usage found for the selected date range.</div>
+                <div class="mt-2">{{ __('report.no_drug_data') }}</div>
             </div>
         @else
         <div class="table-responsive">
@@ -109,10 +109,10 @@
                 <thead style="background:#f8fafc;">
                     <tr>
                         <th class="ps-3">#</th>
-                        <th>Medication Name</th>
-                        <th>Unit</th>
-                        <th class="text-end">Times Dispensed</th>
-                        <th class="text-end pe-3">Total Quantity</th>
+                        <th>{{ __('field.medication_name') }}</th>
+                        <th>{{ __('field.unit') }}</th>
+                        <th class="text-end">{{ __('report.times_dispensed') }}</th>
+                        <th class="text-end pe-3">{{ __('report.total_qty') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,7 +138,7 @@
                 </tbody>
                 <tfoot style="background:#f8fafc;">
                     <tr>
-                        <th colspan="3" class="ps-3">Total</th>
+                        <th colspan="3" class="ps-3">{{ __('common.total') }}</th>
                         <th class="text-end">{{ array_sum(array_column($usage, 'visit_count')) }}</th>
                         <th class="text-end pe-3">{{ number_format(array_sum(array_column($usage, 'total_qty'))) }}</th>
                     </tr>

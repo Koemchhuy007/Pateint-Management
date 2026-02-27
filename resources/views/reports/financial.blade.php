@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Financial Statement')
+@section('title', __('report.financial_statement'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">Reports</a></li>
-    <li class="breadcrumb-item active">Financial Statement</li>
+    <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">{{ __('report.title') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('report.financial_statement') }}</li>
 @endsection
 
 @section('content')
 <div class="mb-3 d-flex align-items-center gap-2">
     <a href="{{ route('reports.index') }}" class="btn btn-sm btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Back
+        <i class="bi bi-arrow-left me-1"></i>{{ __('common.back') }}
     </a>
     <h5 class="fw-bold mb-0" style="color:#1e293b;">
-        <i class="bi bi-cash-stack me-2" style="color:#7c3aed;"></i>Financial Statement
+        <i class="bi bi-cash-stack me-2" style="color:#7c3aed;"></i>{{ __('report.financial_statement') }}
     </h5>
 </div>
 
@@ -74,13 +74,13 @@
 
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary" style="background:#7c3aed;border-color:#7c3aed;">
-                    <i class="bi bi-search me-1"></i>Generate Report
+                    <i class="bi bi-search me-1"></i>{{ __('report.generate') }}
                 </button>
             </div>
             @isset($startDate)
             <div class="col-auto">
                 <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
-                    <i class="bi bi-printer me-1"></i>Print
+                    <i class="bi bi-printer me-1"></i>{{ __('common.print') }}
                 </button>
             </div>
             @endisset
@@ -95,7 +95,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.5rem;font-weight:700;color:#1e293b;">{{ $summary['total_invoices'] }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Total Invoices</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('report.total_invoices') }}</div>
             </div>
         </div>
     </div>
@@ -103,7 +103,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.3rem;font-weight:700;color:#2563eb;">{{ number_format($summary['total_actual'], 2) }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Gross Amount</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('report.gross_amount') }}</div>
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.3rem;font-weight:700;color:#ef4444;">{{ number_format($summary['total_discount'], 2) }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Total Discount</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('report.total_discount') }}</div>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.3rem;font-weight:700;color:#7c3aed;">{{ number_format($summary['total_payable'], 2) }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Net Payable</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('report.net_payable') }}</div>
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@
         <div class="card text-center h-100">
             <div class="card-body py-3">
                 <div style="font-size:1.3rem;font-weight:700;color:#10b981;">{{ number_format($summary['total_received'], 2) }}</div>
-                <div class="text-muted" style="font-size:.78rem;">Amount Received</div>
+                <div class="text-muted" style="font-size:.78rem;">{{ __('report.amount_received') }}</div>
             </div>
         </div>
     </div>
@@ -137,19 +137,19 @@
 @if($byPaymentType->isNotEmpty())
 <div class="card mb-4">
     <div class="card-header py-2" style="font-size:.88rem;">
-        <i class="bi bi-pie-chart me-1"></i>Breakdown by Payment Type
+        <i class="bi bi-pie-chart me-1"></i>{{ __('report.breakdown_payment') }}
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table mb-0" style="font-size:.84rem;">
                 <thead style="background:#f8fafc;">
                     <tr>
-                        <th class="ps-3">Payment Type</th>
-                        <th class="text-end">Invoices</th>
-                        <th class="text-end">Gross Amount</th>
-                        <th class="text-end">Discount</th>
-                        <th class="text-end">Net Payable</th>
-                        <th class="text-end pe-3">Amount Received</th>
+                        <th class="ps-3">{{ __('invoice.payment_type') }}</th>
+                        <th class="text-end">{{ __('report.total_invoices') }}</th>
+                        <th class="text-end">{{ __('report.gross_amount') }}</th>
+                        <th class="text-end">{{ __('invoice.discount') }}</th>
+                        <th class="text-end">{{ __('report.net_payable') }}</th>
+                        <th class="text-end pe-3">{{ __('report.amount_received') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -182,7 +182,7 @@
         @if($invoices->isEmpty())
             <div class="text-center text-muted py-5">
                 <i class="bi bi-receipt" style="font-size:2.5rem; opacity:.35;"></i>
-                <div class="mt-2">No invoices found for the selected date range.</div>
+                <div class="mt-2">{{ __('report.no_invoices') }}</div>
             </div>
         @else
         <div class="table-responsive">
@@ -190,15 +190,15 @@
                 <thead style="background:#f8fafc;">
                     <tr>
                         <th class="ps-3">#</th>
-                        <th>Invoice No.</th>
-                        <th>Date</th>
-                        <th>Patient</th>
-                        <th>Payment Type</th>
-                        <th>Cashier</th>
-                        <th class="text-end">Gross</th>
-                        <th class="text-end">Discount</th>
-                        <th class="text-end">Net Payable</th>
-                        <th class="text-end pe-3">Received</th>
+                        <th>{{ __('report.invoice_no') }}</th>
+                        <th>{{ __('field.date') }}</th>
+                        <th>{{ __('patient.title') }}</th>
+                        <th>{{ __('invoice.payment_type') }}</th>
+                        <th>{{ __('report.cashier') }}</th>
+                        <th class="text-end">{{ __('report.gross') }}</th>
+                        <th class="text-end">{{ __('invoice.discount') }}</th>
+                        <th class="text-end">{{ __('report.net_payable') }}</th>
+                        <th class="text-end pe-3">{{ __('report.received') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -229,7 +229,7 @@
                 </tbody>
                 <tfoot style="background:#f8fafc;">
                     <tr>
-                        <th colspan="6" class="ps-3">Total</th>
+                        <th colspan="6" class="ps-3">{{ __('common.total') }}</th>
                         <th class="text-end">{{ number_format($summary['total_actual'], 2) }}</th>
                         <th class="text-end text-danger">{{ number_format($summary['total_discount'], 2) }}</th>
                         <th class="text-end">{{ number_format($summary['total_payable'], 2) }}</th>

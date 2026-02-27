@@ -3,7 +3,7 @@
 @section('title', $patient->full_name)
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">Patients</a></li>
+<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">{{ __('patient.title') }}</a></li>
 <li class="breadcrumb-item active">{{ $patient->full_name }}</li>
 @endsection
 
@@ -51,20 +51,20 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span>
-                    <i class="bi bi-clipboard-pulse me-2"></i>Visit History
+                    <i class="bi bi-clipboard-pulse me-2"></i>{{ __('patient.visit_history') }}
                     <span class="badge bg-secondary ms-1">{{ $patient->visits->count() }}</span>
                 </span>
                 <a href="{{ route('patients.visits.create', $patient) }}" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-lg me-1"></i>Add New Case
+                    <i class="bi bi-plus-lg me-1"></i>{{ __('visit.create') }}
                 </a>
             </div>
             <div class="card-body p-0">
                 @if($patient->visits->isEmpty())
                 <div class="text-center text-muted py-5">
                     <i class="bi bi-inbox display-4 d-block mb-3"></i>
-                    <p class="mb-2">No visits recorded for this patient yet.</p>
+                    <p class="mb-2">{{ __('visit.no_visits_yet') }}</p>
                     <a href="{{ route('patients.visits.create', $patient) }}" class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus-lg me-1"></i>Add New Case
+                        <i class="bi bi-plus-lg me-1"></i>{{ __('visit.create') }}
                     </a>
                 </div>
                 @else
@@ -73,13 +73,13 @@
                         <thead class="table-light">
                             <tr>
                                 <th>#</th>
-                                <th>Date</th>
-                                <th>Discharge Date</th>
-                                <th class="text-center">Type</th>
+                                <th>{{ __('visit.visit_date') }}</th>
+                                <th>{{ __('visit.discharge_date') }}</th>
+                                <th class="text-center">{{ __('field.visit_type') }}</th>
                                 <th>Doctor</th>
-                                <th>Reason / Diagnosis / Treatment</th>
+                                <th>{{ __('visit.diagnosis') }} / {{ __('visit.prescription') }}</th>
                                 <th>Follow-up</th>
-                                <th style="width:44px" class="text-center">Actions</th>
+                                <th style="width:44px" class="text-center">{{ __('common.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,7 +92,7 @@
                                     <div class="text-muted" style="font-size:.78rem;">{{ $visit->visit_date->format('H:i') }}</div>
                                     @if($isActive)
                                     <span class="active-case-badge">
-                                        <i class="bi bi-circle-fill" style="font-size:.45rem;"></i> Active
+                                        <i class="bi bi-circle-fill" style="font-size:.45rem;"></i> {{ __('common.active') }}
                                     </span>
                                     @endif
                                 </td>
@@ -167,20 +167,20 @@
                                             <li>
                                                 <a class="dropdown-item py-2"
                                                    href="{{ route('patients.visits.show', [$patient, $visit]) }}">
-                                                    <i class="bi bi-eye me-2" style="color:#64748b;"></i>View Detail
+                                                    <i class="bi bi-eye me-2" style="color:#64748b;"></i>{{ __('common.view') }}
                                                 </a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item py-2"
                                                    href="{{ route('patients.visits.show', [$patient, $visit]) }}?print=1"
                                                    target="_blank">
-                                                    <i class="bi bi-printer me-2" style="color:#0369a1;"></i>Print Visit
+                                                    <i class="bi bi-printer me-2" style="color:#0369a1;"></i>{{ __('visit.print') }}
                                                 </a>
                                             </li>
                                             <li>
                                                 <a class="dropdown-item py-2"
                                                    href="{{ route('patients.visits.edit', [$patient, $visit]) }}">
-                                                    <i class="bi bi-pencil me-2" style="color:#2563eb;"></i>Edit
+                                                    <i class="bi bi-pencil me-2" style="color:#2563eb;"></i>{{ __('common.edit') }}
                                                 </a>
                                             </li>
 
@@ -189,12 +189,12 @@
                                             <li>
                                                 <form action="{{ route('patients.visits.discharge', [$patient, $visit]) }}"
                                                       method="POST"
-                                                      onsubmit="return confirm('Mark this visit as discharged today?');">
+                                                      onsubmit="return confirm('{{ __('visit.discharge_confirm') }}');">
                                                     @csrf
                                                     <button type="submit"
                                                             class="dropdown-item py-2 fw-semibold"
                                                             style="color:#d97706;">
-                                                        <i class="bi bi-box-arrow-right me-2"></i>Discharge
+                                                        <i class="bi bi-box-arrow-right me-2"></i>{{ __('patient.discharge') }}
                                                     </button>
                                                 </form>
                                             </li>
@@ -204,11 +204,11 @@
                                             <li>
                                                 <form action="{{ route('patients.visits.destroy', [$patient, $visit]) }}"
                                                       method="POST"
-                                                      onsubmit="return confirm('Delete this visit record?');">
+                                                      onsubmit="return confirm('{{ __('visit.delete_confirm') }}');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="dropdown-item py-2 text-danger">
-                                                        <i class="bi bi-trash me-2"></i>Delete
+                                                        <i class="bi bi-trash me-2"></i>{{ __('common.delete') }}
                                                     </button>
                                                 </form>
                                             </li>

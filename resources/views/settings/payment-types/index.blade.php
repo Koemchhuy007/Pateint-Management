@@ -14,7 +14,7 @@
     <div class="col-lg-10 col-md-9">
 
         <h5 class="fw-bold mb-4" style="color:#1e293b;">
-            <i class="bi bi-credit-card-fill me-2 text-primary"></i>Payment Types
+            <i class="bi bi-credit-card-fill me-2 text-primary"></i>{{ __('settings.payment_types') }}
         </h5>
 
         <div class="row g-4 align-items-start">
@@ -23,14 +23,14 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        <i class="bi bi-plus-circle me-2 text-success"></i>Add Payment Type
+                        <i class="bi bi-plus-circle me-2 text-success"></i>{{ __('settings.payment_add') }}
                     </div>
                     <div class="card-body">
                         <form action="{{ route('settings.payment-types.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label fw-semibold" style="font-size:.83rem;">
-                                    Name <span class="text-danger">*</span>
+                                    {{ __('common.name') }} <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" name="name"
                                        class="form-control @error('name') is-invalid @enderror"
@@ -39,14 +39,14 @@
                                 @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="mb-3">
-                                <label class="form-label fw-semibold" style="font-size:.83rem;">Description</label>
+                                <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('common.description') }}</label>
                                 <input type="text" name="description"
                                        class="form-control"
                                        value="{{ old('description') }}"
                                        placeholder="Optional description">
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm w-100">
-                                <i class="bi bi-plus-lg me-1"></i>Add Type
+                                <i class="bi bi-plus-lg me-1"></i>{{ __('drug.add_type') }}
                             </button>
                         </form>
                     </div>
@@ -57,17 +57,17 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <i class="bi bi-list-ul me-2"></i>All Payment Types
+                        <i class="bi bi-list-ul me-2"></i>{{ __('settings.all_payment_types') }}
                         <span class="badge bg-secondary ms-1" style="font-size:.7rem;">{{ $paymentTypes->count() }}</span>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0" style="font-size:.88rem;">
                             <thead style="background:#f8fafc;">
                                 <tr>
-                                    <th class="ps-4">Name</th>
-                                    <th>Description</th>
-                                    <th style="width:80px;" class="text-center">Status</th>
-                                    <th style="width:110px;" class="text-end pe-4">Actions</th>
+                                    <th class="ps-4">{{ __('common.name') }}</th>
+                                    <th>{{ __('common.description') }}</th>
+                                    <th style="width:80px;" class="text-center">{{ __('field.status') }}</th>
+                                    <th style="width:110px;" class="text-end pe-4">{{ __('common.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,7 +102,7 @@
                                 <tr>
                                     <td colspan="4" class="text-center py-5 text-muted">
                                         <i class="bi bi-credit-card d-block mb-2" style="font-size:2rem;opacity:.3;"></i>
-                                        No payment types yet. Add one on the left.
+                                        {{ __('settings.no_payment_types') }}
                                     </td>
                                 </tr>
                                 @endforelse
@@ -122,7 +122,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header py-3">
-                <h6 class="modal-title fw-bold">Edit Payment Type</h6>
+                <h6 class="modal-title fw-bold">{{ __('settings.payment_edit') }}</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="{{ route('settings.payment-types.update', $pt) }}" method="POST">
@@ -145,9 +145,9 @@
                     </div>
                 </div>
                 <div class="modal-footer py-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
                     <button type="submit" class="btn btn-sm btn-primary">
-                        <i class="bi bi-check-lg me-1"></i>Save
+                        <i class="bi bi-check-lg me-1"></i>{{ __('common.save') }}
                     </button>
                 </div>
             </form>

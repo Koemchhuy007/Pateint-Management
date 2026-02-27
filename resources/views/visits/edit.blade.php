@@ -3,7 +3,7 @@
 @section('title', 'Edit Visit — ' . $patient->full_name)
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">Patients</a></li>
+<li class="breadcrumb-item"><a href="{{ route('patients.index') }}">{{ __('patient.title') }}</a></li>
 <li class="breadcrumb-item"><a href="{{ route('patients.show', $patient) }}">{{ $patient->full_name }}</a></li>
 <li class="breadcrumb-item active">Edit Case</li>
 @endsection
@@ -24,7 +24,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span>
-                    <i class="bi bi-clipboard-check me-2"></i>Edit Visit
+                    <i class="bi bi-clipboard-check me-2"></i>{{ __('visit.edit') }}
                     <span class="text-muted ms-1">— {{ $visit->visit_date->format('M d, Y H:i') }}</span>
                 </span>
                 <a href="{{ route('patients.show', $patient) }}" class="btn btn-outline-secondary btn-sm">
@@ -38,13 +38,13 @@
                     @include('visits._form')
                     <div class="d-flex gap-2 mt-3 flex-wrap">
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check-lg me-1"></i>Update Visit
+                            <i class="bi bi-check-lg me-1"></i>{{ __('visit.update') }}
                         </button>
                         <button type="button" onclick="printCurrentPrescription()"
                                 class="btn btn-outline-success">
-                            <i class="bi bi-printer me-1"></i>Print Prescription
+                            <i class="bi bi-printer me-1"></i>{{ __('visit.print_prescription') }}
                         </button>
-                        <a href="{{ route('patients.show', $patient) }}" class="btn btn-outline-secondary">Cancel</a>
+                        <a href="{{ route('patients.show', $patient) }}" class="btn btn-outline-secondary">{{ __('common.cancel') }}</a>
                     </div>
                 </form>
             </div>
