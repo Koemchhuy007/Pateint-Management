@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', 'Language & Translations — Super Admin')
+@section('title', __('admin.language_translations'))
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Super Admin</a></li>
-<li class="breadcrumb-item"><a href="{{ route('admin.settings.index') }}">Settings</a></li>
-<li class="breadcrumb-item active">Language & Translations</li>
+<li class="breadcrumb-item"><a href="{{ route('admin.index') }}">{{ __('admin.dashboard') }}</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.settings.index') }}">{{ __('nav.setting') }}</a></li>
+<li class="breadcrumb-item active">{{ __('admin.language_translations') }}</li>
 @endsection
 
 @push('styles')
@@ -94,9 +94,9 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
                 <h5 class="mb-0 fw-bold">
-                    <i class="bi bi-translate me-2" style="color:#f59e0b;"></i>Language & Translations
+                    <i class="bi bi-translate me-2" style="color:#f59e0b;"></i>{{ __('admin.language_translations') }}
                 </h5>
-                <small class="text-muted">Edit Khmer translations. English values are read-only references.</small>
+                <small class="text-muted">{{ __('admin.translations_help') }}</small>
             </div>
             <span class="badge rounded-pill px-3 py-2"
                   style="background:{{ app()->getLocale() === 'km' ? '#0891b2' : '#2563eb' }};font-size:.8rem;">
@@ -110,9 +110,9 @@
             <div class="card" style="overflow:hidden;">
 
                 <div class="col-header">
-                    <div>Translation Key</div>
-                    <div>🇬🇧 English (read-only)</div>
-                    <div>🇰🇭 ខ្មែរ — editable</div>
+                    <div>{{ __('admin.translation_key') }}</div>
+                    <div>🇬🇧 {{ __('admin.english_readonly') }}</div>
+                    <div>🇰🇭 {{ __('admin.khmer_editable') }}</div>
                 </div>
 
                 @php
@@ -155,10 +155,10 @@
             <div style="position:sticky;bottom:0;background:#fff;border-top:1px solid #e2e8f0;
                         padding:12px 0;margin-top:16px;display:flex;gap:10px;z-index:100;">
                 <button type="submit" class="btn btn-warning px-4 text-white fw-semibold">
-                    <i class="bi bi-check-lg me-1"></i>Save Translations
+                    <i class="bi bi-check-lg me-1"></i>{{ __('admin.save_translations') }}
                 </button>
                 <a href="{{ route('admin.settings.translations.index') }}" class="btn btn-outline-secondary">
-                    Cancel
+                    {{ __('common.cancel') }}
                 </a>
             </div>
         </form>

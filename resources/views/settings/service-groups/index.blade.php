@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Service Groups — Settings')
+@section('title', __('settings.service_groups'))
 
 @section('breadcrumb')
-<li class="breadcrumb-item active">Settings</li>
-<li class="breadcrumb-item active">Service Groups</li>
+<li class="breadcrumb-item active">{{ __('nav.setting') }}</li>
+<li class="breadcrumb-item active">{{ __('settings.service_groups') }}</li>
 @endsection
 
 @section('content')
@@ -30,19 +30,19 @@
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label fw-semibold" style="font-size:.83rem;">
-                                    Name <span class="text-danger">*</span>
+                                    {{ __('common.name') }} <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" name="name"
                                        class="form-control @error('name') is-invalid @enderror"
                                        value="{{ old('name') }}"
-                                       placeholder="e.g. Consultation, Laboratory…" required>
+                                       placeholder="{{ __('placeholder.service_group_name') }}" required>
                                 @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="mb-3">
-                                <label class="form-label fw-semibold" style="font-size:.83rem;">Description</label>
+                                <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('common.description') }}</label>
                                 <input type="text" name="description" class="form-control"
                                        value="{{ old('description') }}"
-                                       placeholder="Optional description">
+                                       placeholder="{{ __('placeholder.optional_description') }}">
                             </div>
                             <button type="submit" class="btn btn-primary btn-sm w-100">
                                 <i class="bi bi-plus-lg me-1"></i>{{ __('settings.service_add') }}
@@ -78,8 +78,8 @@
                                         <a href="{{ route('settings.service-groups.services.index', $group) }}"
                                            class="badge text-decoration-none"
                                            style="background:#eff6ff;color:#2563eb;font-size:.78rem;"
-                                           title="Manage services">
-                                            {{ $group->services_count }} services
+                                           title="{{ __('settings.manage_services') }}">
+                                            {{ $group->services_count }} {{ __('settings.services') }}
                                         </a>
                                     </td>
                                     <td class="text-end pe-4">
@@ -134,11 +134,11 @@
                 @csrf @method('PUT')
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-semibold" style="font-size:.83rem;">Name <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('common.name') }} <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" value="{{ $group->name }}" required>
                     </div>
                     <div class="mb-0">
-                        <label class="form-label fw-semibold" style="font-size:.83rem;">Description</label>
+                        <label class="form-label fw-semibold" style="font-size:.83rem;">{{ __('common.description') }}</label>
                         <input type="text" name="description" class="form-control" value="{{ $group->description }}">
                     </div>
                 </div>

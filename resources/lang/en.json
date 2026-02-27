@@ -57,6 +57,10 @@
     "common.price":           "Price",
     "common.total":           "Total",
     "common.type":            "Type",
+    "common.optional":        "Optional",
+    "common.created":         "Created",
+    "common.note":            "Note",
+    "common.you":             "You",
 
     "field.name":             "Full Name",
     "field.email":            "Email",
@@ -269,6 +273,11 @@
     "report.total_qty":           "Total Quantity",
     "report.no_drug_data":        "No drug usage found for the selected date range.",
     "report.no_invoices":         "No invoices found for the selected date range.",
+    "report.select_dates":        "Select Dates",
+    "report.view_current_stock":  "View Current Stock",
+    "report.modal_title":         "Generate Report",
+    "report.select_dates_hint":   "Select a date range to pull the report",
+    "report.select_both_dates":   "Please select both start and end dates.",
 
     "analytics.title":          "Analytics",
     "analytics.total_patients": "Total Patients",
@@ -359,6 +368,13 @@
     "admin.platform_wide_option":   "— Platform-wide (no client) —",
     "admin.assign_help":            "Assign to a client so this admin manages only that client's data.",
     "admin.client_active_label":    "Active (client can log in)",
+    "admin.client_clinic_name":     "Client / Clinic Name",
+    "admin.language_translations":  "Language & Translations",
+    "admin.translations_help":      "Edit Khmer translations. English values are read-only references.",
+    "admin.translation_key":        "Translation Key",
+    "admin.english_readonly":       "English (read-only)",
+    "admin.khmer_editable":         "ខ្មែរ — editable",
+    "admin.save_translations":      "Save Translations",
 
     "settings.users":               "Users",
     "settings.add_user":            "Add User",
@@ -388,6 +404,7 @@
     "settings.all_service_groups":  "All Service Groups",
     "settings.no_service_groups":   "No service groups yet. Add one on the left.",
     "settings.manage_services":     "Manage Services",
+    "settings.services":            "services",
     "settings.no_users":            "No users yet.",
     "settings.add_new_user":        "Add New User",
     "settings.update_user":         "Update User",
@@ -416,5 +433,9 @@
     "placeholder.diagnosis":      "Diagnosis notes...",
     "placeholder.search_client":  "Search clients...",
     "placeholder.email":          "Email address",
-    "placeholder.phone":          "Phone number"
+    "placeholder.phone":          "Phone number",
+    "placeholder.search_name_username": "Search name / username",
+    "placeholder.app_description": "Brief description of this system",
+    "placeholder.service_group_name": "e.g. Consultation, Laboratory…",
+    "placeholder.optional_description": "Optional description"
 }

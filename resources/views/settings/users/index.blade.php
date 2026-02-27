@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Users — Settings')
+@section('title', __('settings.users'))
 
 @section('breadcrumb')
-<li class="breadcrumb-item active">Settings</li>
-<li class="breadcrumb-item active">Users</li>
+<li class="breadcrumb-item active">{{ __('nav.setting') }}</li>
+<li class="breadcrumb-item active">{{ __('settings.users') }}</li>
 @endsection
 
 @push('styles')
@@ -56,7 +56,7 @@
                             <td>
                                 <div class="fw-semibold" style="color:#1e293b;">{{ $user->name }}</div>
                                 @if($user->id === auth()->id())
-                                    <span class="badge bg-secondary ms-1" style="font-size:.65rem;">You</span>
+                                    <span class="badge bg-secondary ms-1" style="font-size:.65rem;">{{ __('common.you') }}</span>
                                 @endif
                             </td>
                             <td class="text-muted">{{ $user->username ?? '—' }}</td>

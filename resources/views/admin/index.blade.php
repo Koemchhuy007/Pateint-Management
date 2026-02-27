@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Super Admin Dashboard')
+@section('title', __('admin.dashboard'))
 
 @section('breadcrumb')
-<li class="breadcrumb-item active">Super Admin</li>
+<li class="breadcrumb-item active">{{ __('admin.dashboard') }}</li>
 @endsection
 
 @section('content')
@@ -31,25 +31,25 @@
     <div class="col-6 col-md-3">
         <div class="card text-center py-3">
             <div style="font-size:2rem;font-weight:700;color:#2563eb;">{{ $stats['clients'] }}</div>
-            <div class="text-muted" style="font-size:.82rem;">Clients / Tenants</div>
+            <div class="text-muted" style="font-size:.82rem;">{{ __('admin.stats_clients') }}</div>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="card text-center py-3">
             <div style="font-size:2rem;font-weight:700;color:#059669;">{{ $stats['users'] }}</div>
-            <div class="text-muted" style="font-size:.82rem;">Total Users</div>
+            <div class="text-muted" style="font-size:.82rem;">{{ __('admin.stats_total_users') }}</div>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="card text-center py-3">
             <div style="font-size:2rem;font-weight:700;color:#7c3aed;">{{ $stats['patients'] }}</div>
-            <div class="text-muted" style="font-size:.82rem;">Total Patients</div>
+            <div class="text-muted" style="font-size:.82rem;">{{ __('admin.stats_patients') }}</div>
         </div>
     </div>
     <div class="col-6 col-md-3">
         <div class="card text-center py-3">
             <div style="font-size:2rem;font-weight:700;color:#d97706;">{{ $stats['invoices'] }}</div>
-            <div class="text-muted" style="font-size:.82rem;">Total Invoices</div>
+            <div class="text-muted" style="font-size:.82rem;">{{ __('admin.stats_invoices') }}</div>
         </div>
     </div>
 </div>
@@ -57,18 +57,18 @@
 {{-- ── Recent Clients ── --}}
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-buildings me-2"></i>Recent Clients</span>
+        <span><i class="bi bi-buildings me-2"></i>{{ __('admin.recent_clients') }}</span>
         <a href="{{ route('admin.clients.index') }}" class="btn btn-primary btn-sm">
-            <i class="bi bi-grid me-1"></i>All Clients
+            <i class="bi bi-grid me-1"></i>{{ __('admin.all_clients_link') }}
         </a>
     </div>
     <div class="card-body p-0">
         @if($clients->isEmpty())
         <div class="text-center text-muted py-5">
             <i class="bi bi-building display-4 d-block mb-3"></i>
-            <p>No clients yet.</p>
+            <p>{{ __('admin.no_clients_yet') }}</p>
             <a href="{{ route('admin.clients.create') }}" class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-lg me-1"></i>Add First Client
+                <i class="bi bi-plus-lg me-1"></i>{{ __('admin.add_first_client') }}
             </a>
         </div>
         @else
@@ -76,12 +76,12 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th>Client Name</th>
-                        <th>Email</th>
-                        <th class="text-center">Users</th>
-                        <th class="text-center">Status</th>
-                        <th>Created</th>
-                        <th style="width:100px" class="text-center">Actions</th>
+                        <th>{{ __('admin.client_name') }}</th>
+                        <th>{{ __('field.email') }}</th>
+                        <th class="text-center">{{ __('admin.stats_total_users') }}</th>
+                        <th class="text-center">{{ __('field.status') }}</th>
+                        <th>{{ __('common.created') }}</th>
+                        <th style="width:100px" class="text-center">{{ __('common.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,9 +94,9 @@
                         </td>
                         <td class="text-center">
                             @if($client->is_active)
-                            <span class="badge" style="background:#059669;">Active</span>
+                            <span class="badge" style="background:#059669;">{{ __('common.active') }}</span>
                             @else
-                            <span class="badge bg-secondary">Inactive</span>
+                            <span class="badge bg-secondary">{{ __('common.inactive') }}</span>
                             @endif
                         </td>
                         <td class="text-muted" style="font-size:.82rem;">

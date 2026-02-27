@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Reports')
+@section('title', __('report.title'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">Reports</li>
+    <li class="breadcrumb-item active">{{ __('report.title') }}</li>
 @endsection
 
 @section('content')
@@ -31,7 +31,7 @@
             </div>
             <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
                 <span style="color:#2563eb; font-size:.82rem; font-weight:600;">
-                    <i class="bi bi-calendar-range me-1"></i>Select Dates <i class="bi bi-arrow-right ms-1"></i>
+                    <i class="bi bi-calendar-range me-1"></i>{{ __('report.select_dates') }} <i class="bi bi-arrow-right ms-1"></i>
                 </span>
             </div>
         </div>
@@ -52,7 +52,7 @@
             </div>
             <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
                 <span style="color:#16a34a; font-size:.82rem; font-weight:600;">
-                    <i class="bi bi-calendar-range me-1"></i>Select Dates <i class="bi bi-arrow-right ms-1"></i>
+                    <i class="bi bi-calendar-range me-1"></i>{{ __('report.select_dates') }} <i class="bi bi-arrow-right ms-1"></i>
                 </span>
             </div>
         </div>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
                     <span style="color:#d97706; font-size:.82rem; font-weight:600;">
-                        View Current Stock <i class="bi bi-arrow-right ms-1"></i>
+                        {{ __('report.view_current_stock') }} <i class="bi bi-arrow-right ms-1"></i>
                     </span>
                 </div>
             </div>
@@ -95,7 +95,7 @@
             </div>
             <div class="card-footer bg-transparent border-top-0 pb-3 px-4">
                 <span style="color:#7c3aed; font-size:.82rem; font-weight:600;">
-                    <i class="bi bi-calendar-range me-1"></i>Select Dates <i class="bi bi-arrow-right ms-1"></i>
+                    <i class="bi bi-calendar-range me-1"></i>{{ __('report.select_dates') }} <i class="bi bi-arrow-right ms-1"></i>
                 </span>
             </div>
         </div>
@@ -117,8 +117,8 @@
                         <i id="modalIconEl" class="bi bi-bar-chart-line-fill"></i>
                     </div>
                     <div>
-                        <h6 class="modal-title fw-bold mb-0" id="dateRangeModalLabel" style="color:#1e293b; font-size:1rem;">Generate Report</h6>
-                        <div class="text-muted" style="font-size:.78rem;">Select a date range to pull the report</div>
+                        <h6 class="modal-title fw-bold mb-0" id="dateRangeModalLabel" style="color:#1e293b; font-size:1rem;">{{ __('report.modal_title') }}</h6>
+                        <div class="text-muted" style="font-size:.78rem;">{{ __('report.select_dates_hint') }}</div>
                     </div>
                 </div>
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -180,7 +180,7 @@
 
                     {{-- Inline validation message --}}
                     <div id="modalDateError" class="mt-2 d-none" style="font-size:.8rem; color:#dc2626;">
-                        <i class="bi bi-exclamation-circle me-1"></i>Please select both start and end dates.
+                        <i class="bi bi-exclamation-circle me-1"></i>{{ __('report.select_both_dates') }}
                     </div>
 
                 </div>

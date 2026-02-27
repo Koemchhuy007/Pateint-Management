@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'All Users — Super Admin')
+@section('title', __('admin.all_users'))
 
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Super Admin</a></li>
-<li class="breadcrumb-item active">Users</li>
+<li class="breadcrumb-item"><a href="{{ route('admin.index') }}">{{ __('admin.dashboard') }}</a></li>
+<li class="breadcrumb-item active">{{ __('admin.all_users') }}</li>
 @endsection
 
 @section('content')
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <span><i class="bi bi-people-fill me-2"></i>All Users
+        <span><i class="bi bi-people-fill me-2"></i>{{ __('admin.all_users') }}
             <span class="badge bg-secondary ms-1">{{ $users->total() }}</span>
         </span>
 
@@ -20,7 +20,7 @@
               class="d-flex gap-2 flex-wrap align-items-center">
             <select name="client_id" class="form-select form-select-sm" style="width:180px;"
                     onchange="this.form.submit()">
-                <option value="">All Clients</option>
+                <option value="">{{ __('admin.all_clients_filter') }}</option>
                 @foreach($clients as $c)
                 <option value="{{ $c->id }}" {{ request('client_id') == $c->id ? 'selected' : '' }}>
                     {{ $c->name }}
@@ -29,7 +29,7 @@
             </select>
             <div class="input-group input-group-sm" style="width:220px;">
                 <input type="text" name="search" class="form-control"
-                       placeholder="Search name / username"
+                       placeholder="{{ __('placeholder.search_name_username') }}"
                        value="{{ request('search') }}">
                 <button type="submit" class="btn btn-outline-secondary">
                     <i class="bi bi-search"></i>
@@ -37,7 +37,7 @@
             </div>
             @if(request()->hasAny(['client_id','search']))
             <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary">
-                <i class="bi bi-x-lg"></i> Clear
+                <i class="bi bi-x-lg"></i> {{ __('common.clear') }}
             </a>
             @endif
         </form>
@@ -47,7 +47,7 @@
         @if($users->isEmpty())
         <div class="text-center text-muted py-5">
             <i class="bi bi-people display-4 d-block mb-3"></i>
-            <p>No users found.</p>
+            <p>{{ __('admin.no_users') }}</p>
         </div>
         @else
         <div class="table-responsive">
@@ -55,12 +55,12 @@
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Client</th>
-                        <th class="text-center">Actions</th>
+                        <th>{{ __('field.name') }}</th>
+                        <th>{{ __('field.username') }}</th>
+                        <th>{{ __('field.email') }}</th>
+                        <th>{{ __('field.role') }}</th>
+                        <th>{{ __('admin.clients') }}</th>
+                        <th class="text-center">{{ __('common.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,7 +80,7 @@
                             @if($user->client)
                             <span class="text-muted">{{ $user->client->name }}</span>
                             @else
-                            <span class="text-muted fst-italic">No tenant</span>
+                            <span class="text-muted fst-italic">{{ __('admin.no_tenant') }}</span>
                             @endif
                         </td>
                         <td class="text-center">

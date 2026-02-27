@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'Role Permissions — Settings')
+@section('title', __('settings.role_permissions'))
 
 @section('breadcrumb')
-<li class="breadcrumb-item active">Settings</li>
-<li class="breadcrumb-item active">Role Permissions</li>
+<li class="breadcrumb-item active">{{ __('nav.setting') }}</li>
+<li class="breadcrumb-item active">{{ __('settings.role_permissions') }}</li>
 @endsection
 
 @push('styles')
